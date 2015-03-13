@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:merce="services.merce.*"
+					   xmlns:valueObjects="valueObjects.*"
+					   xmlns:components="components.*"
+					   width="1000" height="800"
+					   height.dancer="834">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+		
+			
+			protected function dataGrid_creationCompleteHandler(event:FlexEvent):void
+			{
+				getDancesResult.token = merce.getDances();
+			}
+			
+			
+			
+			
+			protected function comboBox_creationCompleteHandler(event:FlexEvent):void
+			{
+				getDancersResult.token = merce.getDancers();
+				getDecorResult.token = merce.getDecor();
+				getMusicResult.token = merce.getMusic();
+				getLightingResult.token = merce.getLighting();
+				this.getAllMediaResult.token = merce.getAllMedia();
+			}
+			
+			
+			protected function cboCostumers_creationCompleteHandler(event:FlexEvent):void
+			{
+				getCostumersResult.token = merce.getCostumers();
+			}
+			
+			
+			protected function comboBox2_creationCompleteHandler(event:FlexEvent):void
+			{
+				getLightingResult.token = merce.getLighting();
+			}
+			
+			
+			protected function cboCpomposers_creationCompleteHandler(event:FlexEvent):void
+			{
+				getComposersResult.token = merce.getComposers();
+			}
+			
+			protected function buttonEditDancer_clickHandler(event:MouseEvent):void
+			{
+				if (this.cboDancers.selectedItem){
+				this.currentState = 'dancer';
+				this.editDancer.getDancerDetailsCall(this.cboDancers.selectedItem.data);
+				//this.getDancerDetailsCall(this.cboDancers.selectedItem.data);
+				}else{
+					Alert.show("Please select a dancer");
+					return;
+				}
+			}
+			
+			
+			protected function getDancerDetailsCall(dancerID:Number):void
+			{
+				getDancerDetailsResult.token = merce.getDancerDetails(dancerID);
+			}
+			
+			public function refreshData():void{
+				getDancersResult.token = merce.getDancers();
+				getDecorResult.token = merce.getDecor();
+				getMusicResult.token = merce.getMusic();
+				getCostumersResult.token = merce.getCostumers();
+				getLightingResult.token = merce.getLighting();
+				getDancesResult.token = merce.getDances();
+				getComposersResult.token = merce.getComposers();
+				getDancesResult.token = merce.getDances();
+				this.getAllMediaResult.token = merce.getAllMedia();
+			}
+			
+			protected function buttonAddDancer_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'dancer';
+				this.editDancer.getDancerDetailsCall(0);
+				
+			}
+			
+			protected function buttonEditCostumer_clickHandler(event:MouseEvent):void
+			{
+				{
+					if (this.cboCostumers.selectedItem){
+						this.currentState = 'costumer';
+						this.editCostumer.getcostumerDetailsCall(this.cboCostumers.selectedItem.data);
+						
+					}else{
+						Alert.show("Please select a costumer");
+						return;
+					}
+				}
+				
+			}
+			
+			protected function buttonAddCostumer_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'costumer';
+				this.editCostumer.getcostumerDetailsCall(0);
+				
+			}
+			
+			protected function buttonEditDecor_clickHandler(event:MouseEvent):void
+			{
+				{
+					if (this.cboDecor.selectedItem){
+						this.currentState = 'designer';
+						this.editDecor.getdecorDetailsCall(this.cboDecor.selectedItem.data);
+						
+					}else{
+						Alert.show("Please select a designer");
+						return;
+					}
+				}
+				
+			}
+			
+			protected function buttonAddDecor_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'designer';
+				this.editDecor.getdecorDetailsCall(0);
+			}
+			
+			protected function buttonLightingDes_clickHandler(event:MouseEvent):void
+			{
+				{
+					if (this.cboLighting.selectedItem.data){
+						this.currentState = 'lighting';
+						this.editLighting.getlightingDesignerDetailsCall(this.cboLighting.selectedItem.data);
+					}else{
+						Alert.show("Please select a designer");
+						return;
+					}
+				}
+				
+			}
+			
+			
+			
+			protected function buttonAddLightingDes_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'lighting';
+				this.editLighting.getlightingDesignerDetailsCall(0);
+				
+			}
+			
+			protected function click_EditComposer(event:MouseEvent):void
+			{
+				if(this.cboCpomposers.selectedItem){
+				this.currentState = 'composer';
+				this.editComposer.getcomposerDetailsCall(this.cboCpomposers.selectedItem.data);
+				}else{
+					Alert.show('Please select a composer');
+				}
+			}
+			
+			protected function buttonAddComposer_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'composer';
+				this.editComposer.getcomposerDetailsCall(0);
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'music';
+			}
+			
+			protected function btnAddMusic_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'music';
+			}
+			
+			protected function buttonEditDance_clickHandler(event:MouseEvent):void
+			{
+				if (this.dgDances.selectedItem){
+				this.currentState = 'dance';
+				this.editDance.danceDetailCall(this.dgDances.selectedItem.data);	
+			   }else{
+				   Alert.show('Please select a dance to edit...');
+			   }
+			}
+			
+			
+			protected function buttonRefreshDances_clickHandler(event:MouseEvent):void
+			{
+				getDancesResult.token = merce.getDances();
+				
+			}
+			
+			protected function buttonAddDance_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'dance';
+				this.editDance.danceDetailCall(0);	
+			}
+			
+			
+			
+						
+			protected function buttonDeleteComposer_clickHandler(event:MouseEvent):void
+			{
+				this.getWorksForComposer(this.cboCpomposers.selectedItem.data);
+				
+			}
+			
+			
+			protected function getWorksForComposer(id:Number):void
+			{
+				getWorksForComposerResult.token = merce.getWorksForComposer(id);
+			}
+			
+			protected function getWorksForComposerResult_resultHandler(event:ResultEvent):void
+			{
+				if (this.getWorksForComposerResult.lastResult.length > 0){
+					Alert.show('More than one work');
+				}
+				
+			}
+			
+			protected function buttonDeleteDancer_clickHandler(event:MouseEvent):void
+			{
+				this.getWorksForDancer(this.cboDancers.selectedItem.data);
+				
+			}
+			
+			
+			protected function getWorksForDancer(dancerID:Number):void
+			{
+				getWorksForDancerResult.token = merce.getWorksForDancer(dancerID);
+			}
+			
+			protected function getWorksForDancerResult_resultHandler(event:ResultEvent):void
+			{ if (this.cboDancers.selectedItem){
+				if (this.getWorksForDancerResult.lastResult.length > 0){
+					Alert.show('There are '+this.getWorksForDancerResult.lastResult.length+' dances that include this dancer. Those associations must be deleted first');
+					return;
+				}else{
+					this.deleteDancer(this.cboDancers.selectedItem.data);
+					this.getDancersResult.token = this.merce.getDancers();
+				}
+			}else{
+				Alert.show('Please select a dancer');
+			}
+			}	
+			
+			
+			protected function deleteDancer(dancerID:Number):void
+			{
+				deleteDancerResult.token = merce.deleteDancer(dancerID);
+				getDancersResult.token = merce.getDancers();
+			}
+			
+			protected function buttonDeleteCostumer_clickHandler(event:MouseEvent):void
+			{
+				this.getWorksForCostumer(this.cboCostumers.selectedItem.data);
+				
+			}
+			
+			
+			protected function getWorksForCostumer(CostumerID:Number):void
+			{
+				getWorksForCostumerResult.token = merce.getWorksForCostumer(CostumerID);
+			}
+			
+			protected function getWorksForCostumerResult_resultHandler(event:ResultEvent):void
+				{
+				if(this.cboCostumers.selectedItem){
+				if (this.getWorksForCostumerResult.lastResult.length > 0){
+					Alert.show('There are '+this.getWorksForCostumerResult.lastResult.length+' dances that include this costumer. Those associations must be deleted first');
+					return;
+				}else{
+					this.deleteCostumer(this.cboCostumers.selectedItem.data);
+					this.getCostumersResult.token = merce.getCostumers();
+				}
+				
+				}else{
+					Alert.show('Please select a costumer');
+				}
+			}
+			
+			
+			protected function deleteCostumer(CostumerID:Number):void
+			{
+				deleteCostumerResult.token = merce.deleteCostumer(CostumerID);
+			}
+			
+			
+			protected function getWorksForDecor(decorID:Number):void
+			{
+				getWorksForDecorResult.token = merce.getWorksForDecor(decorID);
+			}
+			
+			protected function buttonDeleteDecor_clickHandler(event:MouseEvent):void
+			{
+				if (this.cboDecor.selectedItem){
+				this.getWorksForDecorResult.token = merce.getWorksForDecor(this.cboDecor.selectedItem.data);
+				}else{
+				Alert.show('Please select a Designer');	
+				}
+			}
+			
+			protected function getWorksForDecorResult_resultHandler(event:ResultEvent):void
+			{
+				if (this.getWorksForDecorResult.lastResult.length > 0){
+					Alert.show('There are '+this.getWorksForDecorResult.lastResult.length+' dances that include this set designer. Those associations must be deleted first');
+					return;
+				}else{
+					this.deleteDecor(this.cboDecor.selectedItem.data);
+					this.getDecorResult.token = this.merce.getDecor();
+				}
+				
+			}
+			
+			
+			protected function deleteDecor(decorID:Number):void
+			{
+				deleteDecorResult.token = merce.deleteDecor(decorID);
+			}
+			
+			protected function buttonDeleteLighting_clickHandler(event:MouseEvent):void
+			{
+				if (this.cboLighting.selectedItem.data){
+					this.getWorksForLighting(this.cboLighting.selectedItem.data);
+				}else{
+					Alert.show('Please select a lighting designer');
+				}
+			}
+			
+			
+			protected function getWorksForLighting(lightingID:Number):void
+			{
+				getWorksForLightingResult.token = merce.getWorksForLighting(lightingID);
+			}
+			
+			protected function getWorksForLightingResult_resultHandler(event:ResultEvent):void
+			{
+				if (this.getWorksForLightingResult.lastResult.length > 0){
+					Alert.show('There are '+this.getWorksForLightingResult.lastResult.length+' dances that include this lighting designer. Those associations must be deleted first');
+					return;
+				}else{
+					this.deleteLighing(this.cboLighting.selectedItem.data);
+					this.getLightingResult.token = this.merce.getLighting();
+				}
+				
+			}
+			
+			
+			protected function deleteLighing(lightingID:Number):void
+			{
+				deleteLighingResult.token = merce.deleteLighing(lightingID);
+			}
+			
+			protected function testChange(event:IndexChangeEvent):void
+			{
+				//this.cboDancers.selectedItem;
+				
+			}
+			
+			protected function editMediaClick(event:MouseEvent):void
+			{
+				if (this.cboMedia.selectedItem){
+					this.currentState = 'media';
+					this.editMedia.mediaDetailCall(this.cboMedia.selectedItem.data);
+				}else{
+					Alert.show('Please select a media element to edit...');
+				}
+				
+			}
+			
+			
+			public function getAllMedia():void
+			{
+				getAllMediaResult.token = merce.getAllMedia();
+			}
+			
+			
+			
+			protected function addMediaItem_click(event:MouseEvent):void
+			{
+				this.currentState = 'media';
+				this.editMedia.mediaDetailCall(0);
+				
+			}
+			
+			protected function btnChangeToEvents_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'events';
+				
+			}
+			
+			protected function license_clickHandler(event:MouseEvent):void{
+				this.currentState = 'license';
+			}
+			
+			protected function btnReturnFromLicense_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = '';
+				
+			}
+			
+			protected function btnLicHistory_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = 'licenseHistory';
+				
+			}
+			
+			protected function btnExitHistory_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.currentState = '';
+			}
+			
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="dancer"/>
+		<s:State name="designer"/>
+		<s:State name="costumer"/>
+		<s:State name="lighting"/>
+		<s:State name="music"/>
+		<s:State name="composer"/>
+		<s:State name="dance"/>
+		<s:State name="media"/>
+		<s:State name="events"/>
+		<s:State name="license"/>
+		<s:State name="licenseHistory"/>
+	</s:states>
+	<fx:Declarations>
+		<s:CallResponder id="getDancesResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getDancersResult"
+						 result="dancers = getDancersResult.lastResult[0] as Dancers"/>
+		<s:CallResponder id="getCostumersResult"/>
+		<s:CallResponder id="getDecorResult"/>
+		<s:CallResponder id="getLightingResult"/>
+		<s:CallResponder id="getComposersResult"/>
+		<s:CallResponder id="getMusicResult"/>
+		<valueObjects:Dancers id="dancers"/>
+		<s:CallResponder id="getDancerDetailsResult"/>
+		<s:CallResponder id="getWorksForComposerResult" result="getWorksForComposerResult_resultHandler(event)"/>
+		<s:CallResponder id="getWorksForDancerResult" result="getWorksForDancerResult_resultHandler(event)"/>
+		<s:CallResponder id="deleteDancerResult"/>
+		<s:CallResponder id="getWorksForCostumerResult" result="getWorksForCostumerResult_resultHandler(event)"/>
+		<s:CallResponder id="deleteCostumerResult"/>
+		<s:CallResponder id="getWorksForDecorResult" result="getWorksForDecorResult_resultHandler(event)"/>
+		<s:CallResponder id="deleteDecorResult"/>
+		<s:CallResponder id="getWorksForLightingResult" result="getWorksForLightingResult_resultHandler(event)"/>
+		<s:CallResponder id="deleteLighingResult"/>
+		<s:CallResponder id="getAllMediaResult" />
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:DataGrid id="dgDances" includeIn="State1" x="10" y="105" width="426" height="555"
+				creationComplete="dataGrid_creationCompleteHandler(event)" >
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Dance"></s:GridColumn>
+				<s:GridColumn dataField="data" headerText="label" visible="false"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:AsyncListView list="{getDancesResult.lastResult}"/>
+	</s:DataGrid>
+	<s:Button id="buttonAddDance" includeIn="State1" x="153" y="731" width="141" label="Add Dance"
+			  click="buttonAddDance_clickHandler(event)"/>
+	<s:Label includeIn="State1" x="154" y="89" text="Click to Select/Edit Dance"/>
+	<s:BorderContainer includeIn="State1" x="459" y="105" width="505" height="555">
+		<s:ComboBox id="cboDancers" x="26" y="45" width="182"
+					creationComplete="comboBox_creationCompleteHandler(event)" labelField="label" selectedItem="{{label:'- Select Dancer ---'}}" change="testChange(event)">
+			<s:AsyncListView list="{getDancersResult.lastResult}"/>
+		</s:ComboBox>
+		<s:Button id="buttonEditDancer" x="238" y="45" width="123" label="Edit Dancer"
+				  click="buttonEditDancer_clickHandler(event)"/>
+		<s:Button id="buttonAddDancer" x="374" y="44" width="106" label="Add Dancer"
+				  click="buttonAddDancer_clickHandler(event)"/>
+		<s:ComboBox id="cboCostumers" x="26" y="115" width="182"
+					creationComplete="cboCostumers_creationCompleteHandler(event)"
+					labelField="label"
+					selectedItem="{{label:'- Select Costumer ---'}}">
+			<s:AsyncListView list="{getCostumersResult.lastResult}"/>
+		</s:ComboBox>
+		<s:Button id="buttonEditCostumer" x="238" y="117" width="123" label="Edit Costumer"
+				  click="buttonEditCostumer_clickHandler(event)"/>
+		<s:Button id="buttonAddCostumer" x="378" y="116" width="106" label="Add Costumer"
+				  click="buttonAddCostumer_clickHandler(event)"/>
+		<s:ComboBox id="cboDecor" x="26" y="183" width="182"
+					creationComplete="comboBox_creationCompleteHandler(event)" labelField="label" selectedItem="{{label:'- Select Decor ---'}}">
+			<s:AsyncListView list="{getDecorResult.lastResult}"/>
+		</s:ComboBox>
+		<s:Button id="buttonEditDecor" x="238" y="185" width="123" label="Edit Decor"
+				  click="buttonEditDecor_clickHandler(event)"/>
+		<s:Button id="buttonAddDecor" x="378" y="185" width="106" label="Add Decor"
+				  click="buttonAddDecor_clickHandler(event)"/>
+		<s:ComboBox id="cboLighting" x="26" y="249" width="182"
+					creationComplete="comboBox2_creationCompleteHandler(event)" labelField="label"
+					selectedItem="{{label:'- Select Lighting Des. ---'}}">
+			<s:AsyncListView list="{getLightingResult.lastResult}"/>
+		</s:ComboBox>
+		<s:Button id="buttonLightingDes" x="238" y="249" width="123" label="Edit Lighting Des."
+				  click="buttonLightingDes_clickHandler(event)"/>
+		<s:Button id="buttonAddLightingDes" x="378" y="249" label="Add Lighting Des."
+				  click="buttonAddLightingDes_clickHandler(event)"/>
+		<s:ComboBox id="cboCpomposers" x="26" y="317" width="182"
+					creationComplete="cboCpomposers_creationCompleteHandler(event)"
+					labelField="label" selectedItem="{{label:'- Select Composer. ---'}}">
+			<s:AsyncListView list="{getComposersResult.lastResult}"/>
+		</s:ComboBox>
+		<s:Button id="buttonEditComposer" x="238" y="317" width="123" label="Edit Composer"
+				  click="click_EditComposer(event)"/>
+		<s:Button id="buttonAddComposer" x="378" y="317" width="115" label="Add Composer"
+				  click="buttonAddComposer_clickHandler(event)"/>
+		
+		<s:Button id="btnAddMusic" x="378" y="348" width="115" label="Add Music"
+				  click="btnAddMusic_clickHandler(event)"/>
+		<s:Button id="buttonDeleteComposer" x="239" y="348" width="123" label="Delete Composer"
+				  click="buttonDeleteComposer_clickHandler(event)" visible="false"/>
+		<s:Button id="buttonDeleteDancer" x="238" y="74" width="123" label="Delete Dancer"
+				  click="buttonDeleteDancer_clickHandler(event)"/>
+		<s:Button id="buttonDeleteCostumer" x="238" y="146" width="123" label="Delete Costumer"
+				  click="buttonDeleteCostumer_clickHandler(event)"/>
+		<s:Button id="buttonDeleteDecor" x="238" y="214" width="123" label="Delete Decor"
+				  click="buttonDeleteDecor_clickHandler(event)"/>
+		<s:Button id="buttonDeleteLighting" x="238" y="278" width="123" label="Delete Lighting Des."
+				  click="buttonDeleteLighting_clickHandler(event)"/>
+		<s:Button id="buttonMedia" x="378" y="403" width="115" label="Add Media Item"
+				  click="addMediaItem_click(event)"/>
+		<s:Button id="buttonEditMedia" x="239" y="403" width="122" label="Edit Media Item"
+				  click="editMediaClick(event)"/>
+		<s:ComboBox id="cboMedia" x="26" y="401" width="182" labelField="label"
+					selectedItem="{{label:'- Select Media Element ---'}}">
+			<s:AsyncListView list="{getAllMediaResult.lastResult}"/>
+		</s:ComboBox>
+	</s:BorderContainer>
+	
+	<components:editDancer id="editDancer" includeIn="dancer" x="291" y="80" width="421"
+						   height="653" dancerID="{this.cboDancers.selectedItem.data}">
+	</components:editDancer>
+	<components:editCostumer  id="editCostumer" includeIn="costumer" x="209" y="42" costumerID="{this.cboCostumers.selectedItem.data}">
+	</components:editCostumer>
+	<components:editDecor includeIn="designer" x="227" y="71" decorID="{this.cboDecor.selectedItem.data}" id="editDecor">
+	</components:editDecor>
+	<components:editLighting includeIn="lighting" x="229" y="76" id="editLighting" lightingDesignerID="{this.cboLighting.selectedItem.data}">
+	</components:editLighting>
+	<components:editComposer includeIn="composer" x="218" y="82" id="editComposer" composerID="{this.cboCpomposers.selectedItem.data}">
+	</components:editComposer>
+	<components:editMusic includeIn="music" x="167" y="110">
+	</components:editMusic>
+	<components:editDance includeIn="dance" x="56" y="25" danceID="{this.dgDances.selectedItem.data}" id="editDance">
+	</components:editDance>
+	<s:Button id="buttonEditDance" includeIn="State1" x="153" y="699" width="141" label="Edit Dance"
+			  click="buttonEditDance_clickHandler(event)"/>
+	<s:Label includeIn="dance" x="410" y="101" fontSize="10" fontStyle="italic"
+			 text="select on calendar"/>
+	<s:Label includeIn="dance" x="336" y="345" fontSize="10" fontStyle="italic"
+			 text="in minutes - integer"/>
+	<s:Label includeIn="State1" x="369" y="29" fontSize="18" fontWeight="bold" text="Cunningham Works Database"/>
+	<s:Label includeIn="State1" x="439" y="54" fontSize="10" fontStyle="italic" text="version 4.8 July 2014"/>
+	<s:Label includeIn="dance" x="290" y="441" text="If revival year = Premiere Date, then revival"/>
+	<s:Label includeIn="dance" x="290" y="454" width="231" text="date = &quot;&quot;. i.e., there is no revival"/>
+	<s:Button id="buttonRefreshDances" includeIn="State1" x="153" y="667" width="141"
+			  label="Refresh Dances" click="buttonRefreshDances_clickHandler(event)"/>
+	<s:Label includeIn="State1" x="691" y="84" text="MetaData"/>
+	<components:editMedia includeIn="media" x="104" y="15" id="editMedia"  mediaID="{this.cboMedia.selectedItem.data}">
+	</components:editMedia>
+	<components:eventEditor includeIn="events" x="10" y="37" width="980">
+	</components:eventEditor>
+	<s:Button id="btnChangeToEvents" includeIn="State1" x="10" y="8" width="156"
+			  label="Events Data for Web" click="btnChangeToEvents_clickHandler(event)"/>
+	<s:Label includeIn="events" x="445" y="17" text="Web Events Editor"/>
+	<s:Button includeIn="State1" x="10" y="37" width="156" label="Current License Data"
+			  click="license_clickHandler(event)"/>
+	<s:Label includeIn="license" x="428" y="11" text="License Data for the Web"/>
+	<components:licenseEdit includeIn="license" x="10" y="35" width="980">
+		</components:licenseEdit>
+	<s:Button id="btnReturnFromLicense" includeIn="license" x="465" y="538" label="Return"
+			  click="btnReturnFromLicense_clickHandler(event)"/>
+	<s:Button id="btnLicHistory" includeIn="State1" x="10" y="65" width="156" label="License History"
+			  click="btnLicHistory_clickHandler(event)"/>
+	<components:licenseHistory includeIn="licenseHistory" x="40" y="42" width="826">
+	</components:licenseHistory>
+	<s:Button id="btnExitHistory" includeIn="licenseHistory" x="400" y="557" label="Exit"
+			  click="btnExitHistory_clickHandler(event)"/>
+	
+</s:WindowedApplication>

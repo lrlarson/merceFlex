@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 xmlns:valueObjects="valueObjects.*"
+		 xmlns:components="components.*"
+		 width="806" height="742">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			
+			
+			[bindable]
+			public var mediaID:Number;
+			
+			protected var editMode:String;
+			
+			public function mediaDetailCall(mediaID:Number):void{
+				if (mediaID > 0){
+				editMode = 'EDIT';	
+				getMediaElementResult.token = merce.getMediaElement(mediaID);
+				this.btnCreateMediaItem.visible = false;
+				this.btnSaveChanges.visible = false;
+				this.buttonAssociateDancer2.visible = true;
+				this.buttonAssociateDesigner.visible = true;
+				} else {
+				editMode = 'NEW';
+				titleTextInput.text = '';
+				descriptionTextInput.text= '';
+				 directorTextInput.text= '';
+				producerTextInput.text= '';
+				 linkTextInput.text= '';
+				lengthTextInput.text= '';
+				 lengthStringTextInput.text= '';
+				 yearDateField.selectedDate= null;
+				cboColorBW.selectedItem = null;
+				distributorTextInput.text= '';
+				musicianTextInput.text= '';
+				this.btnCreateMediaItem.visible = false;
+				this.btnSaveChanges.visible = false;
+				}
+			}
+			
+			
+			protected function handleChange():void{
+				if (editMode == 'EDIT'){
+					this.btnSaveChanges.visible = true;
+					this.btnCreateMediaItem.visible = false;
+				}else{
+					this.btnCreateMediaItem.visible = true;
+					this.btnSaveChanges.visible = false;
+				}
+			}
+			
+			protected function button_clickHandler(event:MouseEvent):void
+			{
+				getMediaElementResult.token = merce.getMediaElement(mediaID);
+			}
+			
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				mediaElement.title = titleTextInput.text;
+				mediaElement.description = descriptionTextInput.text;
+				mediaElement.director = directorTextInput.text;
+				mediaElement.producer = producerTextInput.text;
+				mediaElement.link = linkTextInput.text;
+				mediaElement.length = parseInt(lengthTextInput.text);
+				mediaElement.lengthString = lengthStringTextInput.text;
+				mediaElement.year = yearDateField.selectedDate;
+				mediaElement.colorBW = this.cboColorBW.selectedItem;
+				mediaElement.distributor = distributorTextInput.text;
+				mediaElement.musicians = this.musicianTextInput.text;
+			}
+			
+			protected function saveChanges_Click(event:MouseEvent):void
+			{	
+				//mediaElement = new MediaElement();
+				mediaElement.id = mediaID;
+				mediaElement.title = titleTextInput.text;
+				mediaElement.description = descriptionTextInput.text;
+				mediaElement.director = directorTextInput.text;
+				mediaElement.producer = producerTextInput.text;
+				mediaElement.link = linkTextInput.text;
+				mediaElement.length = parseInt(lengthTextInput.text);
+				mediaElement.lengthString = lengthStringTextInput.text;
+				mediaElement.year = yearDateField.selectedDate;
+				mediaElement.colorBW = this.cboColorBW.selectedItem;
+				mediaElement.distributor = distributorTextInput.text;
+				mediaElement.musicians = this.musicianTextInput.text;
+				mediaElement.publish = int(this.publishTextInput.text);
+				mediaElement.videoLink = this.videolinkTextInput.text;
+				this.updateMediaElement(mediaElement);
+				//this.parentApplication.refreshData();
+				//this.parentApplication.currentState = '';
+			}
+			
+			protected function createMedia_click(event:MouseEvent):void
+			{
+				mediaElement.title = titleTextInput.text;
+				mediaElement.description = descriptionTextInput.text;
+				mediaElement.director = directorTextInput.text;
+				mediaElement.producer = producerTextInput.text;
+				mediaElement.link = linkTextInput.text;
+				mediaElement.length = parseInt(lengthTextInput.text);
+				mediaElement.lengthString = lengthStringTextInput.text;
+				mediaElement.year = yearDateField.selectedDate;
+				mediaElement.colorBW = this.cboColorBW.selectedItem;
+				mediaElement.distributor = distributorTextInput.text;
+				mediaElement.musicians = this.musicianTextInput.text;
+				mediaElement.videoLink = this.videolinkTextInput.text;
+				this.createMediaElement(mediaElement);
+				this.parentApplication.refreshData();
+				this.parentApplication.currentState = '';
+				this.parentApplication.getAllMedia();
+				
+			}
+			
+			protected function cancel_click(event:MouseEvent):void
+			{
+				this.parentApplication.currentState = '';
+				
+			}
+			
+			
+			protected function createMediaElement(mediaDetails:MediaElement):void
+			{
+				
+				createMediaElementResult.token = merce.createMediaElement(mediaDetails);
+			}
+			
+			
+			protected function updateMediaElement(mediaDetails:MediaElement):void
+			{
+				updateMediaElementResult.token = merce.updateMediaElement(mediaDetails);
+				this.parentApplication.refreshData();
+				this.parentApplication.currentState = '';
+			}
+			
+			protected function createMediaElementResult_resultHandler(event:ResultEvent):void
+			{
+				this.parentApplication.getAllMedia();
+				
+			}
+			
+			protected function updateMediaElementResult_resultHandler(event:ResultEvent):void
+			{
+				
+				this.parentApplication.getAllMedia();
+			}
+			
+			protected function buttonAssociateDancer_clickHandler(event:MouseEvent):void
+			{
+				this.mediaDance.visible = false;
+				this.mediaDancers.visible = true;
+				this.mediaDesigners.visible = false;
+				this.mediaDancers.mediaDancerCall(this.mediaElement.id);
+			}
+			
+			protected function buttonAssociateDesigner_clickHandler(event:MouseEvent):void
+			{
+				this.mediaDesigners.visible = true;
+				this.mediaDancers.visible = false;
+				this.mediaDance.visible = false;
+				this.mediaDesigners.mediaDancerCall(this.mediaElement.id);
+				
+			}
+			
+			protected function buttonAssociateDance_clickHandler(event:MouseEvent):void
+			{
+				this.mediaDesigners.visible = false;
+				this.mediaDancers.visible = false;
+				this.mediaDance.visible = true;
+				this.mediaDance.mediaDancerCall(this.mediaElement.id);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getMediaElementResult"
+						 result="mediaElement = getMediaElementResult.lastResult[0] as MediaElement"/>
+		<valueObjects:MediaElement id="mediaElement"/>
+		<s:CallResponder id="createMediaElementResult" result="createMediaElementResult_resultHandler(event)"/>
+		<s:CallResponder id="updateMediaElementResult" result="updateMediaElementResult_resultHandler(event)"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Form width="493">
+		<s:FormItem width="467" label="Title">
+			<s:TextInput id="titleTextInput" width="351" text="{mediaElement.title}" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="466" label="Description">
+			<s:TextArea id="descriptionTextInput" width="347" height="88"
+						text="{mediaElement.description}"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="Director">
+			<s:TextInput id="directorTextInput" width="347" text="{mediaElement.director}" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="Producer">
+			<s:TextInput id="producerTextInput" width="347" text="{mediaElement.producer}" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="Link">
+			<s:TextInput id="linkTextInput" width="347" text="{mediaElement.link}" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="Video Sample Link">
+			<s:TextInput id="videolinkTextInput" width="347" text="{mediaElement.videoLink}" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="Length">
+			<s:TextInput id="lengthTextInput" width="347" text="{mediaElement.length}" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="LengthString">
+			<s:TextInput id="lengthStringTextInput" width="347" text="{mediaElement.lengthString}" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="Year">
+			<mx:DateField id="yearDateField" width="122" selectedDate="{mediaElement.year}" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="ColorBW">
+			<s:ComboBox  id="cboColorBW" prompt="Color or BW" selectedItem="{mediaElement.colorBW}" change="this.handleChange()">
+				<s:dataProvider>
+					<mx:ArrayList>
+						<fx:String>Color</fx:String>
+						<fx:String>B/W</fx:String>
+					</mx:ArrayList>
+				</s:dataProvider>
+			</s:ComboBox> 
+		</s:FormItem>
+		<s:FormItem width="465" label="Distributor">
+			<s:TextInput id="distributorTextInput" text="{mediaElement.distributor}" width="347" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="465" label="Musicians">
+			<s:TextInput id="musicianTextInput" text="{mediaElement.musicians}" width="347" change="this.handleChange()"/>
+		</s:FormItem>
+		<s:FormItem width="464" label="Publish - 1 Yes, 0 No">
+			<s:TextInput id="publishTextInput" text="{mediaElement.publish}" width="30" change="this.handleChange()"/>
+		</s:FormItem>
+	</s:Form>
+	<s:Label x="607" y="10" fontSize="11" text="Media"/>
+	<s:Label x="601" y="30" fontSize="11" text="Elements"/>
+	<s:Button id="btnSaveChanges" x="564" y="69" width="119" label="Save Changes"
+			  click="saveChanges_Click(event)"/>
+	<s:Button id="btnCreateMediaItem" x="564" y="98" width="119" label="Create Media"
+			  click="createMedia_click(event)"/>
+	<s:Button id="btnCancel" x="562" y="127" label="Cancel and Return"
+			  click="cancel_click(event)"/>
+	
+	<s:Button id="buttonAssociateDancer2" x="600" y="606" label="Associate Dancer"
+			  click="buttonAssociateDancer_clickHandler(event)" visible="true"/>
+	<components:mediaDancer x="496" y="156" id="mediaDancers" visible="false" mediaID="{mediaElement.id}">
+	</components:mediaDancer>
+	<components:mediaDesigner x="496" y="156" id="mediaDesigners" visible="false" mediaID="{mediaElement.id}">
+	</components:mediaDesigner>
+	<components:mediaDance x="496" y="156" id="mediaDance" visible="false" mediaID="{mediaElement.id}">
+	</components:mediaDance>
+	<s:Button id="buttonAssociateDesigner" visible="true" x="526" y="635" label="Associate Designer"
+			  click="buttonAssociateDesigner_clickHandler(event)"/>
+	<s:Button id="buttonAssociateDance" x="658" y="635" width="126" label="Associate Dance"
+			  click="buttonAssociateDance_clickHandler(event)"/>
+</s:Group>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:merce="services.merce.*"
+		 width="400" height="550">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			import valueObjects.LightingAssoc;
+			import valueObjects.LightingAssociation;
+			
+			private var danceTarget:Number;
+			
+			[Bindable]
+			private var lightingAssociation:LightingAssociation;
+			
+			protected function getAvailableLighting(danceID:Number):void
+			{
+				getAvailableLightingResult.token = merce.getAvailableLighting(danceID);
+			}
+			
+			public function initLightingCall(danceID:Number):void{
+				this.danceTarget = danceID;
+				this.getAvailableLighting(danceID);
+				this.getLightingForWork(danceID);
+				this.buttonCreateAssociation.visible = true;
+				this.buttonSaveEdit.visible = false;
+			}
+			
+			
+			protected function getLightingForWork(danceID:Number):void
+			{
+				getLightingForWorkResult.token = merce.getLightingForWork(danceID);
+			}
+			
+			
+			protected function createAssocRecordForLighting(danceID:Number, LightingID:Number, notes:String):void
+			{
+				createAssocRecordForLightingResult2.token = merce.createAssocRecordForLighting(danceID, LightingID,notes);
+			}
+			
+			
+			
+			
+			
+			protected function buttonCreateAssociation_clickHandler(event:MouseEvent):void
+			{
+				if(this.cboAvailable.selectedItem){
+					this.createAssocRecordForLighting2(danceTarget,this.cboAvailable.selectedItem.data,this.tiNote.text);
+					this.getAvailableLighting(danceTarget);
+					this.getLightingForWork(danceTarget);
+				}else{
+					Alert.show('Please select an available Lighting');
+					return;
+				}
+			}
+			
+			protected function buttonDeleteAssociation_clickHandler(event:MouseEvent):void
+			{
+				if(this.dataGrid.selectedItem){
+					this.deleteLightingAssociation(this.dataGrid.selectedItem.id);
+					this.getAvailableLighting(danceTarget);
+					this.getLightingForWork(danceTarget);
+					this.tiNote.text = '';
+				}else{
+					Alert.show('Please select a Lighting association to delete');
+				}
+			}
+			
+			
+			protected function deleteLightingAssociation(id:Number):void
+			{
+				deleteLightingAssociationResult.token = merce.deleteLightingAssociation(id);
+			}
+			
+			
+			protected function createAssocRecordForLighting2(danceID:Number, LightingID:Number, notes:String):void
+			{
+				createAssocRecordForLightingResult2.token = merce.createAssocRecordForLighting(danceID, LightingID, notes);
+			}
+			
+			protected function buttonEditAssociation_clickHandler(event:MouseEvent):void
+			{
+				this.getAssociationLighting(this.dataGrid.selectedItem.id);
+				this.buttonCreateAssociation.visible = false;
+				this.buttonSaveEdit.visible = true;
+			}
+			
+			protected function getAssociationLighting(id:Number):void
+			{
+				getAssociationLightingResult.token = merce.getAssociationLighting(id);
+			}
+			
+			protected function buttonSaveEdit_clickHandler(event:MouseEvent):void
+			{
+				this.updateLightingAssociation(this.dataGrid.selectedItem.id,this.tiNote.text);
+			}
+			
+			
+			protected function updateLightingAssociation(id:Number, notes:String):void
+			{
+				updateLightingAssociationResult.token = merce.updateLightingAssociation(id, notes);
+			}
+			
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getAvailableLightingResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getLightingForWorkResult"/>
+		<s:CallResponder id="createAssocRecordForLightingResult"/>
+		<s:CallResponder id="deleteLightingAssociationResult"/>
+		<s:CallResponder id="createAssocRecordForLightingResult2"/>
+		<s:CallResponder id="getAssociationLightingResult" result="lightingAssociation = getAssociationLightingResult.lastResult[0] as LightingAssociation"/>
+		<s:CallResponder id="updateLightingAssociationResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label x="137" y="29" text="Lighting / Dance Data"/>
+	<s:ComboBox id="cboAvailable" x="105" y="101" width="204" labelField="label"
+				selectedItem="{{label:'- Select Lighting ---'}}">
+		<s:AsyncListView list="{getAvailableLightingResult.lastResult}"/>
+	</s:ComboBox>
+	<s:DataGrid id="dataGrid" x="80" y="346" width="241" requestedRowCount="4">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Lighting for Work"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getLightingForWorkResult.lastResult}"/>
+	</s:DataGrid>
+	<s:Label x="127" y="75" width="146" text="Available Lighting"/>
+	<s:Button id="buttonCreateAssociation" x="106" y="282" label="Create Lighting Association"
+			  click="buttonCreateAssociation_clickHandler(event)"/>
+	<s:Button id="buttonDeleteAssociation" x="116" y="516" label="Delete Selected Association"
+			  click="buttonDeleteAssociation_clickHandler(event)"/>
+	<s:TextArea id="tiNote" x="106" y="152" height="60"
+				text="{lightingAssociation.notes}"/>
+	<s:Label x="106" y="220" text="Note"/>
+	<s:Button id="buttonEditAssociation" x="116" y="483" width="169"
+			  label="Edit Selected Association" click="buttonEditAssociation_clickHandler(event)"/>
+	<s:Button id="buttonSaveEdit" x="106" y="293" width="166" label="Save Edits"
+			  click="buttonSaveEdit_clickHandler(event)"/>
+</s:Group>
+

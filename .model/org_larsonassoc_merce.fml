@@ -1,0 +1,2432 @@
+
+<model xmlns="http://ns.adobe.com/Fiber/1.0">
+  <annotation name="ActionScriptGeneration">
+    <item name="FullyQualifyReferences">true</item>
+  </annotation>
+  <entity name="EventTypes">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">EventTypes</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getEventTypes">
+      <item name="propertySpecifier">data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="CustomDatatype">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">CustomDatatype</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAllLics">
+      <item name="propertySpecifier">id,Dance,licType,stagerTeacher,Premiere,Licensee,Rehearsals,live</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="Dance" type="string" required="true"/>
+    <property name="licType" type="integer" required="true"/>
+    <property name="stagerTeacher" type="string" required="true"/>
+    <property name="Premiere" type="string" required="true"/>
+    <property name="Licensee" type="string" required="true"/>
+    <property name="Rehearsals" type="string" required="true"/>
+    <property name="live" type="integer" required="true"/>
+  </entity>
+  <service name="Merce">
+    <annotation name="ActionScriptGeneration">
+      <item name="Source">merceDances.merce</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.merce</item>
+      <item name="Endpoint">http://localhost:8500/flex2gateway/</item>
+      <item name="Destination">ColdFusion</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">ColdFusion</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="COLDFUSION_SERVER_ROOT_URL">http://localhost:8500/</item>
+      <item name="LINKED_FILE">merce.cfc</item>
+      <item name="COLDFUSION_SERVER_CONTEXT_ROOT"></item>
+      <item name="CFC_CLASS_NAME">merce</item>
+      <item name="CFC_RELATIVE_LOCATION">merceDances/merce.cfc</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost:8500/flex2gateway/</item>
+      <item name="CFC_LOCATION">/Applications/ColdFusion9/wwwroot/merceDances/merce.cfc</item>
+    </annotation>
+    <function name="getDances" return-type="DanceSummary[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getDancers" return-type="Dancers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getCostumers" return-type="Costumers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">costumer_FN,costumer_LN,data,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getDecor" return-type="Decor[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">decor_LN,data,label,decor_FN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getLighting" return-type="Lighting[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label,lightingDesigner_FN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getComposers" return-type="Composers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Composer_LN,data,label,Composer_FN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getMusic" return-type="Music[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">label,DATA</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getDancerDetails" return-type="DancerDetails[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,dancer_LN,dancer_FN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParamNames">dancerID</item>
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="dancerID" type="float"/>
+    </function>
+    <function name="updateDancerDetails" return-type="DancerDetailsUpdateResponse[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="dancerID" type="float"/>
+      <parameter name="dancer_FN" type="string"/>
+      <parameter name="dancer_LN" type="string"/>
+    </function>
+    <function name="insertNewDancer" return-type="double">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="dancer_FN" type="string"/>
+      <parameter name="dancer_LN" type="string"/>
+    </function>
+    <function name="getCostumerDetails" return-type="CostumerDetail[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,costumer_FN,costumer_LN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="costumerID" type="float"/>
+    </function>
+    <function name="updatecostumerDetails" return-type="DancerDetailsUpdateResponse[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="costumerID" type="float"/>
+      <parameter name="costumer_FN" type="string"/>
+      <parameter name="costumer_LN" type="string"/>
+    </function>
+    <function name="insertNewcostumer" return-type="double">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="costumer_FN" type="string"/>
+      <parameter name="costumer_LN" type="string"/>
+    </function>
+    <function name="insertNewdecor" return-type="double">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="decor_FN" type="string"/>
+      <parameter name="decor_LN" type="string"/>
+    </function>
+    <function name="updatedecorDetails" return-type="DancerDetailsUpdateResponse[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="decorID" type="float"/>
+      <parameter name="decor_FN" type="string"/>
+      <parameter name="decor_LN" type="string"/>
+    </function>
+    <function name="getDecorDetails" return-type="DecorDetail[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,decor_LN,decor_FN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="decorID" type="float"/>
+    </function>
+    <function name="updatelightingDesignerDetails" return-type="DancerDetailsUpdateResponse[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="lightingDesignerID" type="float"/>
+      <parameter name="lightingDesigner_FN" type="string"/>
+      <parameter name="lightingDesigner_LN" type="string"/>
+    </function>
+    <function name="insertNewlightingDesigner" return-type="double">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="lightingDesigner_FN" type="string"/>
+      <parameter name="lightingDesigner_LN" type="string"/>
+    </function>
+    <function name="getLightingDesignerDetails" return-type="LightingDesignerDetails[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,lightingDesigner_FN,lightingDesigner_LN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="lightingDesignerID" type="float"/>
+    </function>
+    <function name="updateComposerDetails" return-type="DancerDetailsUpdateResponse[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="composerID" type="float"/>
+      <parameter name="composer_FN" type="string"/>
+      <parameter name="composer_LN" type="string"/>
+    </function>
+    <function name="insertNewComposer" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="composer_FN" type="string"/>
+      <parameter name="composer_LN" type="string"/>
+    </function>
+    <function name="getComposerDetails" return-type="ComposerDetails[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,composer_FN,composer_LN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="composerID" type="float"/>
+    </function>
+    <function name="getMusicAndComposers" return-type="MusicAndComposers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,Composer_LN,label,musicID,Composer_FN,Title</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="insertMusicComposer" return-type="DancerDetailsUpdateResponse[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string,float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="title" type="string"/>
+      <parameter name="composer" type="float"/>
+    </function>
+    <function name="getDanceDetails" return-type="DanceDetails[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">workTitle,revivalYear,premiereCity,isCapsule,premiereCountry,id,workLengthString,workImageNotes,revivalNotes,length,capsuleURL,premiereString,premiereVenue,revivalLocation,workImage,premiereDate</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="updateDanceDetails" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string,float,string,date,string,string,string,string,date,string,string,string,string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+      <parameter name="workTitle" type="string"/>
+      <parameter name="length" type="float"/>
+      <parameter name="workLengthString" type="string"/>
+      <parameter name="premiereDate" type="date"/>
+      <parameter name="premiereVenue" type="string"/>
+      <parameter name="premiereString" type="string"/>
+      <parameter name="premiereCity" type="string"/>
+      <parameter name="premiereCountry" type="string"/>
+      <parameter name="revivalYear" type="date"/>
+      <parameter name="revivalLocation" type="string"/>
+      <parameter name="revivalNotes" type="string"/>
+      <parameter name="workImage" type="string"/>
+      <parameter name="workImageNotes" type="string"/>
+      <parameter name="capsuleURL" type="string"/>
+    </function>
+    <function name="createDance" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceDetails" type="opaque"/>
+    </function>
+    <function name="getAvailableDancers" return-type="Dancers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="getDancersForWork" return-type="DancerAssociation[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,dancer_LN,originalDancer,dancer_FN,label,castInititials</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="createAssocRecordForDancer" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float,opaque,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="integer"/>
+      <parameter name="dancerID" type="integer"/>
+      <parameter name="orginal" type="integer"/>
+      <parameter name="initials" type="string"/>
+    </function>
+    <function name="deleteDancerAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="getAssocRecordForDancer" return-type="DanceAssociation[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">work,originalDancer,castInititials,dancer</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="editAssociationForDancer" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float,float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="dancer" type="float"/>
+      <parameter name="dance" type="float"/>
+      <parameter name="originalDancer" type="float"/>
+      <parameter name="castInititials" type="string"/>
+    </function>
+    <function name="getAvailableCostumers" return-type="AvailableCostumers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Costumer_LN,data,Costumer_FN,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="getCostumersForWork" return-type="CostumersForWork[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,costumer_FN,costumer_LN,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="createAssocRecordForCostumer" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+      <parameter name="costumerID" type="float"/>
+      <parameter name="notes" type="string"/>
+    </function>
+    <function name="deleteCostumerAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="createAssocRecordForDecor" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+      <parameter name="DecorID" type="float"/>
+      <parameter name="notes" type="string"/>
+    </function>
+    <function name="deleteDecorAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="getDecorForWork" return-type="DecorAssociations[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,label,Decor_FN,Decor_LN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="getAvailableDecor" return-type="AvailableDecor[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label,Decor_FN,Decor_LN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="getLightingForWork" return-type="LightingAssoc[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,LightingDesigner_FN,LightingDesigner_LN,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="deleteLightingAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="createAssocRecordForLighting" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+      <parameter name="LightingID" type="float"/>
+      <parameter name="notes" type="string"/>
+    </function>
+    <function name="getAvailableLighting" return-type="AvailableLighting[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">LightingDesigner_FN,LightingDesigner_LN,data,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="getMusicForWork" return-type="MusicAssociations[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,Composer_LN,data,label,Title</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="deleteMusicAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="getAvailableMusic" return-type="AvailableMusic[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Composer_LN,data,label,Title</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+    </function>
+    <function name="createAssocRecordForMusic" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="danceID" type="float"/>
+      <parameter name="MusicID" type="float"/>
+      <parameter name="notes" type="string"/>
+    </function>
+    <function name="updateLightingAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+      <parameter name="notes" type="string"/>
+    </function>
+    <function name="getAssociationLighting" return-type="LightingAssociation[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">notes,lightingDesigner_FN,lightingDesigner_LN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="updateMusicAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+      <parameter name="notes" type="string"/>
+    </function>
+    <function name="getAssociationMusic" return-type="MusicAssociation[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Composer_LN,notes,Title,Composer_FN</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="updateDecorAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+      <parameter name="notes" type="string"/>
+    </function>
+    <function name="getAssociationDecor" return-type="DecorAssociation[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">decor_LN,notes,decor_FN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="updateCostumerAssociation" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+      <parameter name="notes" type="string"/>
+    </function>
+    <function name="getAssociationCostumer" return-type="CostumerAssociation[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Costumer_LN,Costumer_FN,notes</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="getWorksForComposer" return-type="MusicCompositionsForComposer[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Composer_LN,Title,Composer_FN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="getWorksForDancer" return-type="WorksForDancers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">workTitle</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="dancerID" type="float"/>
+    </function>
+    <function name="deleteDancer" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="dancerID" type="float"/>
+    </function>
+    <function name="getWorksForCostumer" return-type="WorksForCostumers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">workTitle</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="CostumerID" type="float"/>
+    </function>
+    <function name="deleteCostumer" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="CostumerID" type="float"/>
+    </function>
+    <function name="getWorksForDecor" return-type="WorksForDecor[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">workTitle</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="decorID" type="float"/>
+    </function>
+    <function name="deleteDecor" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="decorID" type="float"/>
+    </function>
+    <function name="getWorksForLighting" return-type="WorksForLighting[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">workTitle,id</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="lightingID" type="float"/>
+    </function>
+    <function name="deleteLighing" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="lightingID" type="float"/>
+    </function>
+    <function name="getMediaElement" return-type="MediaElement[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">link,lengthString,videoLink,director,id,colorBW,musicians,title,description,length,producer,year,distributor,publish</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="createMediaElement" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaDetails" type="MediaElement"/>
+    </function>
+    <function name="getAllMedia" return-type="AllMedia[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="updateMediaElement" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaDetails" type="MediaElement"/>
+    </function>
+    <function name="getAvailableDancersMedia" return-type="Dancers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="createDancerMediaAssoc" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+      <parameter name="juctionTarget" type="float"/>
+    </function>
+    <function name="getAssociatedDancersMedia" return-type="Dancers[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="dissassociateFromMedia" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float,float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+      <parameter name="junctionType" type="float"/>
+      <parameter name="junctionTarget" type="float"/>
+    </function>
+    <function name="getAvailableDesignersMedia" return-type="AvailableDecor[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label,Decor_FN,Decor_LN</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="createDesignerMediaAssoc" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+      <parameter name="juctionTarget" type="float"/>
+    </function>
+    <function name="getAssociatedDesignersMedia" return-type="MediaAssociatedDesigners[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">junctionType,data,label,Decor_FN,Decor_LN</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="getAssociatedDancesMedia" return-type="AssociatedDances[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="getAvailableDancesMedia" return-type="AvailableDances[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="createDanceMediaAssoc" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float,float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+      <parameter name="juctionTarget" type="float"/>
+    </function>
+    <function name="getMediaDances" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getSpecificEvent" return-type="MerceEvents[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,eventLocation,eventDescription,TypeLabel,eventStartDate,eventDateString,eventPublishLabel,eventName,eventEndDate,eventPublish,eventType,eventWeb</item>
+      </annotation>
+      <parameter name="event_ID" type="float"/>
+    </function>
+    <function name="getMediaDancers" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getProfLics" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getDesignersForMediaID" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="getMediaDesigners" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getInitialWebLoad" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getDancesForMediaID" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="getMediaDetails" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="getEdLics" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getCurrentEvents" return-type="MerceEvents[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,eventLocation,eventDescription,eventStartDate,eventDateString,eventName,eventEndDate,eventPublish,eventType,eventWeb</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="filter" type="string"/>
+    </function>
+    <function name="getDancersForMediaID" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="mediaID" type="float"/>
+    </function>
+    <function name="getEventTypes" return-type="EventType1[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getPublishTypes" return-type="PublishTypes[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,label</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="updateEvent" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="merceEvent" type="MerceEvents"/>
+    </function>
+    <function name="createNewEvent" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="merceEvent" type="MerceEvents"/>
+    </function>
+    <function name="getCurrentEventsALL" return-type="MerceEvents[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,eventLocation,eventDescription,TypeLabel,eventStartDate,eventDateString,eventPublishLabel,eventName,eventEndDate,eventPublish,eventType,eventWeb</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="filter" type="string"/>
+    </function>
+    <function name="getAllLics" return-type="License[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,Dance,licType,stagerTeacher,Premiere,Licensee,Rehearsals,live</item>
+      </annotation>
+    </function>
+    <function name="getAllLiveLics" return-type="License[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,Dance,licType,stagerTeacher,Premiere,Licensee,Rehearsals,live</item>
+      </annotation>
+    </function>
+    <function name="getLicByID" return-type="License">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,Dance,licType,stagerTeacher,Premiere,Licensee,Rehearsals,live</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="updateLicense" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="license" type="License"/>
+    </function>
+    <function name="createLicense" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="license" type="License"/>
+    </function>
+    <function name="deleteLicense" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="double"/>
+    </function>
+    <function name="getWorkDescription" return-type="WorkDescription[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,workTitle,description</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="float"/>
+    </function>
+    <function name="updateWorkDescription" return-type="double">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="workDescription" type="WorkDescription"/>
+    </function>
+    <function name="getLicenseHistory" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="licType" type="float"/>
+    </function>
+    <function name="getAllLicenseHistory" return-type="LicenseHistory[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,Year,Dance,licType,Stager,Company,referenceYear</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getLicenseByID" return-type="LicenseHistory[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,Year,Dance,licType,Stager,Company,referenceYear</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="ID" type="float"/>
+    </function>
+    <function name="upateLicenseHistory" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">id,Year,Dance,licType,Stager,Company,referenceYear</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="licenseHistory" type="LicenseHistory"/>
+    </function>
+    <function name="insertNewLicenseHistory" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="licenseHistory" type="LicenseHistory"/>
+    </function>
+    <function name="deleteLicenseHistoryByID" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">float</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="ID" type="float"/>
+    </function>
+  </service>
+  <entity name="LightingDesignerDetails">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">LightingDesignerDetails</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getLightingDesignerDetails">
+      <item name="propertySpecifier">id,lightingDesigner_FN,lightingDesigner_LN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="lightingDesigner_FN" type="string" required="true"/>
+    <property name="lightingDesigner_LN" type="string" required="true"/>
+  </entity>
+  <entity name="CostumerDetail">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">CostumerDetail</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getCostumerDetails">
+      <item name="propertySpecifier">id,costumer_FN,costumer_LN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="costumer_FN" type="string" required="true"/>
+    <property name="costumer_LN" type="string" required="true"/>
+  </entity>
+  <entity name="EventType1">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">EventType1</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getEventTypes">
+      <item name="propertySpecifier">data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="DancerDetailsUpdateResponse">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DancerDetailsUpdateResponse</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="updateDancerDetails">
+      <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="updatecostumerDetails">
+      <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+    </annotation>
+    <annotation name="updatedecorDetails">
+      <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+    </annotation>
+    <annotation name="updatelightingDesignerDetails">
+      <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+    </annotation>
+    <annotation name="updateComposerDetails">
+      <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+    </annotation>
+    <annotation name="insertMusicComposer">
+      <item name="propertySpecifier">COMPUTED_COLUMN_1</item>
+    </annotation>
+    <property name="COMPUTED_COLUMN_1" type="integer" required="true"/>
+  </entity>
+  <entity name="AvailableMusic">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">AvailableMusic</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAvailableMusic">
+      <item name="propertySpecifier">Composer_LN,data,label,Title</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="Composer_LN" type="string" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="Title" type="string" required="true"/>
+  </entity>
+  <entity name="Lighting">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Lighting</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getLighting">
+      <item name="propertySpecifier">data,label,lightingDesigner_FN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="lightingDesigner_FN" type="string" required="true"/>
+  </entity>
+  <entity name="WorksForDecor">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">WorksForDecor</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getWorksForDecor">
+      <item name="propertySpecifier">workTitle</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="workTitle" type="string" required="true"/>
+  </entity>
+  <entity name="DancerDetails">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DancerDetails</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getDancerDetails">
+      <item name="propertySpecifier">id,dancer_LN,dancer_FN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getDanceDetails">
+      <item name="propertySpecifier">workTitle,revivalYear,premiereCity,premiereCountry,id,workLengthString,workImageNotes,revivalNotes,length,premiereString,premiereVenue,revivalLocation,workImage,premiereDate</item>
+    </annotation>
+    <property name="dancer_LN" type="string" required="true"/>
+    <property name="dancer_FN" type="string" required="true"/>
+    <property name="workTitle" type="string" required="true"/>
+    <property name="revivalYear" type="date" required="true"/>
+    <property name="premiereCity" type="string" required="true"/>
+    <property name="premiereCountry" type="string" required="true"/>
+    <property name="id" type="integer" required="true"/>
+    <property name="workLengthString" type="string" required="true"/>
+    <property name="workImageNotes" type="string" required="true"/>
+    <property name="revivalNotes" type="string" required="true"/>
+    <property name="length" type="integer" required="true"/>
+    <property name="premiereString" type="string" required="true"/>
+    <property name="premiereVenue" type="string" required="true"/>
+    <property name="revivalLocation" type="string" required="true"/>
+    <property name="workImage" type="opaque" required="true"/>
+    <property name="premiereDate" type="date" required="true"/>
+  </entity>
+  <entity name="WorksForDancers">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">WorksForDancers</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getWorksForDancer">
+      <item name="propertySpecifier">workTitle</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="workTitle" type="string" required="true"/>
+  </entity>
+  <entity name="MediaAssociatedDesigners">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">MediaAssociatedDesigners</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssociatedDesignersMedia">
+      <item name="propertySpecifier">junctionType,data,label,Decor_FN,Decor_LN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="junctionType" type="integer" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="Decor_FN" type="string" required="true"/>
+    <property name="Decor_LN" type="string" required="true"/>
+  </entity>
+  <entity name="MusicAndComposers">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">MusicAndComposers</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getMusicAndComposers">
+      <item name="propertySpecifier">id,Composer_LN,label,musicID,Composer_FN,Title</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="Composer_LN" type="string" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="musicID" type="integer" required="true"/>
+    <property name="Composer_FN" type="string" required="true"/>
+    <property name="Title" type="string" required="true"/>
+  </entity>
+  <entity name="PublishTypes">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">PublishTypes</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getPublishTypes">
+      <item name="propertySpecifier">data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="ComposerDetails">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">ComposerDetails</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getComposerDetails">
+      <item name="propertySpecifier">id,composer_FN,composer_LN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="composer_FN" type="string" required="true"/>
+    <property name="composer_LN" type="string" required="true"/>
+  </entity>
+  <entity name="MusicCompositionsForComposer">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">MusicCompositionsForComposer</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getWorksForComposer">
+      <item name="propertySpecifier">Composer_LN,Title,Composer_FN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="Composer_LN" type="string" required="true"/>
+    <property name="Title" type="string" required="true"/>
+    <property name="Composer_FN" type="string" required="true"/>
+  </entity>
+  <entity name="AllMedia">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">AllMedia</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAllMedia">
+      <item name="propertySpecifier">data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getMediaElement">
+      <item name="propertySpecifier">link,lengthString,director,id,colorBW,musicians,title,description,length,producer,year,distributor,publish</item>
+    </annotation>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="link" type="string" required="true"/>
+    <property name="lengthString" type="string" required="true"/>
+    <property name="director" type="string" required="true"/>
+    <property name="id" type="integer" required="true"/>
+    <property name="colorBW" type="string" required="true"/>
+    <property name="musicians" type="string" required="true"/>
+    <property name="title" type="string" required="true"/>
+    <property name="description" type="string" required="true"/>
+    <property name="length" type="integer" required="true"/>
+    <property name="producer" type="string" required="true"/>
+    <property name="year" type="date" required="true"/>
+    <property name="distributor" type="string" required="true"/>
+    <property name="publish" type="integer" required="true"/>
+  </entity>
+  <entity name="AvailableDecor">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">AvailableDecor</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAvailableDecor">
+      <item name="propertySpecifier">data,label,Decor_FN,Decor_LN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getAvailableDesignersMedia">
+      <item name="propertySpecifier">data,label,Decor_FN,Decor_LN</item>
+    </annotation>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="Decor_FN" type="string" required="true"/>
+    <property name="Decor_LN" type="string" required="true"/>
+  </entity>
+  <entity name="MerceEvents">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">MerceEvents</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getCurrentEvents">
+      <item name="propertySpecifier">id,eventLocation,eventDescription,eventStartDate,eventDateString,eventName,eventEndDate,eventPublish,eventType,eventWeb</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getSpecificEvent">
+      <item name="propertySpecifier">id,eventLocation,eventDescription,TypeLabel,eventStartDate,eventDateString,eventPublishLabel,eventName,eventEndDate,eventPublish,eventType,eventWeb</item>
+    </annotation>
+    <annotation name="getCurrentEventsALL">
+      <item name="propertySpecifier">id,eventLocation,eventDescription,TypeLabel,eventStartDate,eventDateString,eventPublishLabel,eventName,eventEndDate,eventPublish,eventType,eventWeb</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="eventLocation" type="string" required="true"/>
+    <property name="eventDescription" type="string" required="true"/>
+    <property name="TypeLabel" type="string" required="true"/>
+    <property name="eventStartDate" type="date" required="true"/>
+    <property name="eventDateString" type="string" required="true"/>
+    <property name="eventPublishLabel" type="string" required="true"/>
+    <property name="eventName" type="string" required="true"/>
+    <property name="eventEndDate" type="date" required="true"/>
+    <property name="eventPublish" type="integer" required="true"/>
+    <property name="eventType" type="integer" required="true"/>
+    <property name="eventWeb" type="string" required="true"/>
+  </entity>
+  <entity name="CostumerAssociation">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">CostumerAssociation</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssociationCostumer">
+      <item name="propertySpecifier">Costumer_LN,Costumer_FN,notes</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="Costumer_LN" type="string" required="true"/>
+    <property name="Costumer_FN" type="string" required="true"/>
+    <property name="notes" type="string" required="true"/>
+  </entity>
+  <entity name="AvailableDances">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">AvailableDances</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssociatedDancesMedia">
+      <item name="propertySpecifier">data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getAvailableDancesMedia">
+      <item name="propertySpecifier">data,label</item>
+    </annotation>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="MusicAssociation">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">MusicAssociation</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssociationMusic">
+      <item name="propertySpecifier">Composer_LN,notes,Title,Composer_FN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="Composer_LN" type="string" required="true"/>
+    <property name="notes" type="string" required="true"/>
+    <property name="Title" type="string" required="true"/>
+    <property name="Composer_FN" type="string" required="true"/>
+  </entity>
+  <entity name="Music">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Music</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getMusic">
+      <item name="propertySpecifier">label,DATA</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="label" type="string" required="true"/>
+    <property name="DATA" type="integer" required="true"/>
+  </entity>
+  <entity name="CostumersForWork">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">CostumersForWork</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getCostumersForWork">
+      <item name="propertySpecifier">id,costumer_FN,costumer_LN,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="costumer_FN" type="string" required="true"/>
+    <property name="costumer_LN" type="string" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="AssociatedDances">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">AssociatedDances</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssociatedDancesMedia">
+      <item name="propertySpecifier">data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="DecorAssociations">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DecorAssociations</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getDecorForWork">
+      <item name="propertySpecifier">id,label,Decor_FN,Decor_LN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="Decor_FN" type="string" required="true"/>
+    <property name="Decor_LN" type="string" required="true"/>
+  </entity>
+  <entity name="DanceAssociation">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DanceAssociation</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssocRecordForDancer">
+      <item name="propertySpecifier">work,originalDancer,castInititials,dancer</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="work" type="integer" required="true"/>
+    <property name="originalDancer" type="boolean" required="true"/>
+    <property name="castInititials" type="string" required="true"/>
+    <property name="dancer" type="integer" required="true"/>
+  </entity>
+  <entity name="Composers">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Composers</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getComposers">
+      <item name="propertySpecifier">Composer_LN,data,label,Composer_FN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="Composer_LN" type="string" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="Composer_FN" type="string" required="true"/>
+  </entity>
+  <entity name="Dancers">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Dancers</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getDancers">
+      <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getDancerDetails">
+      <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+    </annotation>
+    <annotation name="getAvailableDancers">
+      <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+    </annotation>
+    <annotation name="getDancersForWork">
+      <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+    </annotation>
+    <annotation name="getAvailableDancersMedia">
+      <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+    </annotation>
+    <annotation name="getAssociatedDancersMedia">
+      <item name="propertySpecifier">dancer_LN,data,dancer_FN,label</item>
+    </annotation>
+    <property name="dancer_LN" type="string" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="dancer_FN" type="string" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="LightingAssociation">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">LightingAssociation</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssociationLighting">
+      <item name="propertySpecifier">notes,lightingDesigner_FN,lightingDesigner_LN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="notes" type="string" required="true"/>
+    <property name="lightingDesigner_FN" type="string" required="true"/>
+    <property name="lightingDesigner_LN" type="string" required="true"/>
+  </entity>
+  <entity name="DecorAssociation">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DecorAssociation</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssociationDecor">
+      <item name="propertySpecifier">decor_LN,notes,decor_FN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="decor_LN" type="string" required="true"/>
+    <property name="notes" type="string" required="true"/>
+    <property name="decor_FN" type="string" required="true"/>
+  </entity>
+  <entity name="DanceDetails">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DanceDetails</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getDanceDetails">
+      <item name="propertySpecifier">workTitle,revivalYear,premiereCity,isCapsule,premiereCountry,id,workLengthString,workImageNotes,revivalNotes,length,capsuleURL,premiereString,premiereVenue,revivalLocation,workImage,premiereDate</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="workTitle" type="string" required="true"/>
+    <property name="revivalYear" type="date" required="true"/>
+    <property name="premiereCity" type="string" required="true"/>
+    <property name="isCapsule" type="integer" required="true"/>
+    <property name="premiereCountry" type="string" required="true"/>
+    <property name="id" type="integer" required="true"/>
+    <property name="workLengthString" type="string" required="true"/>
+    <property name="workImageNotes" type="string" required="true"/>
+    <property name="revivalNotes" type="string" required="true"/>
+    <property name="length" type="integer" required="true"/>
+    <property name="capsuleURL" type="string" required="true"/>
+    <property name="premiereString" type="string" required="true"/>
+    <property name="premiereVenue" type="string" required="true"/>
+    <property name="revivalLocation" type="string" required="true"/>
+    <property name="workImage" type="string" required="true"/>
+    <property name="premiereDate" type="date" required="true"/>
+  </entity>
+  <entity name="WorksForLighting">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">WorksForLighting</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getWorksForLighting">
+      <item name="propertySpecifier">workTitle,id</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="workTitle" type="string" required="true"/>
+    <property name="id" type="integer" required="true"/>
+  </entity>
+  <entity name="Costumers">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Costumers</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getCostumers">
+      <item name="propertySpecifier">costumer_FN,costumer_LN,data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="costumer_FN" type="string" required="true"/>
+    <property name="costumer_LN" type="string" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="AvailableLighting">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">AvailableLighting</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAvailableLighting">
+      <item name="propertySpecifier">LightingDesigner_FN,LightingDesigner_LN,data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="LightingDesigner_FN" type="string" required="true"/>
+    <property name="LightingDesigner_LN" type="string" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="LightingAssoc">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">LightingAssoc</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getLightingForWork">
+      <item name="propertySpecifier">id,LightingDesigner_FN,LightingDesigner_LN,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="LightingDesigner_FN" type="string" required="true"/>
+    <property name="LightingDesigner_LN" type="string" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="DecorDetail">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DecorDetail</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getDecorDetails">
+      <item name="propertySpecifier">id,decor_LN,decor_FN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="decor_LN" type="string" required="true"/>
+    <property name="decor_FN" type="string" required="true"/>
+  </entity>
+  <entity name="MediaElement">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">MediaElement</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getMediaElement">
+      <item name="propertySpecifier">link,lengthString,videoLink,director,id,colorBW,musicians,title,description,length,producer,year,distributor,publish</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="link" type="string" required="true"/>
+    <property name="lengthString" type="string" required="true"/>
+    <property name="videoLink" type="string" required="true"/>
+    <property name="director" type="string" required="true"/>
+    <property name="id" type="integer" required="true"/>
+    <property name="colorBW" type="string" required="true"/>
+    <property name="musicians" type="string" required="true"/>
+    <property name="title" type="string" required="true"/>
+    <property name="description" type="string" required="true"/>
+    <property name="length" type="integer" required="true"/>
+    <property name="producer" type="string" required="true"/>
+    <property name="year" type="date" required="true"/>
+    <property name="distributor" type="string" required="true"/>
+    <property name="publish" type="opaque" required="true"/>
+  </entity>
+  <entity name="Decor">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Decor</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getDecor">
+      <item name="propertySpecifier">decor_LN,data,label,decor_FN</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="decor_LN" type="string" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="decor_FN" type="string" required="true"/>
+  </entity>
+  <entity name="License">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">License</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAllLics">
+      <item name="propertySpecifier">id,Dance,licType,stagerTeacher,Premiere,Licensee,Rehearsals,live</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getAllLiveLics">
+      <item name="propertySpecifier">id,Dance,licType,stagerTeacher,Premiere,Licensee,Rehearsals,live</item>
+    </annotation>
+    <annotation name="getLicByID">
+      <item name="propertySpecifier">id,Dance,licType,stagerTeacher,Premiere,Licensee,Rehearsals,live</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="Dance" type="string" required="true"/>
+    <property name="licType" type="integer" required="true"/>
+    <property name="stagerTeacher" type="string" required="true"/>
+    <property name="Premiere" type="string" required="true"/>
+    <property name="Licensee" type="string" required="true"/>
+    <property name="Rehearsals" type="string" required="true"/>
+    <property name="live" type="integer" required="true"/>
+  </entity>
+  <entity name="MusicAssociations">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">MusicAssociations</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getMusicForWork">
+      <item name="propertySpecifier">id,Composer_LN,data,label,Title</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="Composer_LN" type="string" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="Title" type="string" required="true"/>
+  </entity>
+  <entity name="DanceSummary">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DanceSummary</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getDances">
+      <item name="propertySpecifier">data,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="workTitle" type="string" required="true"/>
+    <property name="workLengthString" type="string" required="true"/>
+    <property name="revivalYear" type="string" required="true"/>
+    <property name="revivalNotes" type="string" required="true"/>
+    <property name="premiereCity" type="string" required="true"/>
+    <property name="length" type="integer" required="true"/>
+    <property name="premiereCountry" type="string" required="true"/>
+    <property name="premiereString" type="string" required="true"/>
+    <property name="premiereVenue" type="string" required="true"/>
+    <property name="revivalLocation" type="string" required="true"/>
+    <property name="premiereDate" type="date" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="WorksForCostumers">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">WorksForCostumers</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getWorksForCostumer">
+      <item name="propertySpecifier">workTitle</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="workTitle" type="string" required="true"/>
+  </entity>
+  <entity name="AvailableCostumers">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">AvailableCostumers</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAvailableCostumers">
+      <item name="propertySpecifier">Costumer_LN,data,Costumer_FN,label</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getCostumersForWork">
+      <item name="propertySpecifier">Costumer_LN,data,Costumer_FN,label</item>
+    </annotation>
+    <property name="Costumer_LN" type="string" required="true"/>
+    <property name="data" type="integer" required="true"/>
+    <property name="Costumer_FN" type="string" required="true"/>
+    <property name="label" type="string" required="true"/>
+  </entity>
+  <entity name="WorkDescription">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">WorkDescription</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getWorkDescription">
+      <item name="propertySpecifier">id,workTitle,description</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="workTitle" type="string" required="true"/>
+    <property name="description" type="string" required="true"/>
+  </entity>
+  <entity name="DancerAssociation">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">DancerAssociation</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAssocRecordForDancer">
+      <item name="propertySpecifier">work,originalDancer,castInititials,dancer</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getDancersForWork">
+      <item name="propertySpecifier">id,dancer_LN,originalDancer,dancer_FN,label,castInititials</item>
+    </annotation>
+    <property name="work" type="integer" required="true"/>
+    <property name="dancer" type="integer" required="true"/>
+    <property name="id" type="integer" required="true"/>
+    <property name="dancer_LN" type="string" required="true"/>
+    <property name="originalDancer" type="boolean" required="true"/>
+    <property name="dancer_FN" type="string" required="true"/>
+    <property name="label" type="string" required="true"/>
+    <property name="castInititials" type="string" required="true"/>
+  </entity>
+  <entity name="LicenseHistory">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">LicenseHistory</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Merce,MerceDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getAllLicenseHistory">
+      <item name="propertySpecifier">id,Year,Dance,licType,Stager,Company,referenceYear</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getLicenseByID">
+      <item name="propertySpecifier">id,Year,Dance,licType,Stager,Company,referenceYear</item>
+    </annotation>
+    <annotation name="upateLicenseHistory">
+      <item name="propertySpecifier">id,Year,Dance,licType,Stager,Company,referenceYear</item>
+    </annotation>
+    <property name="id" type="integer" required="true"/>
+    <property name="Year" type="string" required="true"/>
+    <property name="Dance" type="string" required="true"/>
+    <property name="licType" type="integer" required="true"/>
+    <property name="Stager" type="string" required="true"/>
+    <property name="Company" type="string" required="true"/>
+    <property name="referenceYear" type="integer" required="true"/>
+  </entity>
+</model>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="300" height="502">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			public var mediaID:Number;
+			
+			
+			public function mediaDancerCall(mediaID:Number):void{
+				//getAssociatedDesignersMedia(mediaID);
+				//this.getAvailableDesignersMedia(mediaID);
+				this.getAvailableDancesMedia(mediaID);
+				this.getAssociatedDancesMedia(mediaID);
+				//this.getAvailableDesignersMediaResult.token = merce.getAvailableDesignersMedia(mediaID);
+				//getAssociatedDancersMediaResult.token = merce.getAssociatedDancersMedia(mediaID);
+				this.buttonCancel.visible = true;
+				this.buttonFinished.visible = false;
+			}
+			
+			
+			protected function buttonCancel_clickHandler(event:MouseEvent):void
+			{
+				this.visible = false;
+			}
+			
+			protected function getAvailableDancersMedia(mediaID:Number):void
+			{
+				getAvailableDancersMediaResult.token = merce.getAvailableDancersMedia(mediaID);
+			}
+			
+			protected function associateSelectedDancer(event:MouseEvent):void
+			{
+				//this.createDesignerMediaAssoc(mediaID,this.cboDancers.selectedItem.data);
+				this.createDanceMediaAssoc(mediaID,this.cboDancers.selectedItem.data);
+				this.buttonCancel.visible = false;
+				this.buttonFinished.visible = true;
+				
+			}
+			
+			
+			protected function createDancerMediaAssoc(mediaID:Number, juctionTarget:Number):void
+			{
+				createDancerMediaAssocResult.token = merce.createDancerMediaAssoc(mediaID, juctionTarget);
+			}
+			
+			protected function handleInsertAssociation(event:ResultEvent):void{
+				//this.getAvailableDancersMedia(mediaID);
+				//getAssociatedDancersMediaResult.token = merce.getAssociatedDancersMedia(mediaID);
+				//this.getAssociatedDesignersMediaResult.token = merce.getAssociatedDesignersMedia(mediaID);
+				//this.getAvailableDesignersMediaResult.token = merce.getAvailableDesignersMedia(mediaID);
+				this.getAvailableDancesMediaResult.token = merce.getAvailableDancesMedia(mediaID);
+				this.getAssociatedDancesMediaResult.token = merce.getAssociatedDancesMedia(mediaID);
+			}
+			
+			
+			
+			
+			protected function dissaciateSelectedDancer(event:MouseEvent):void
+			{
+				this.dissassociateFromMedia(mediaID,1,this.dataGrid.selectedItem.data);
+				this.buttonCancel.visible = false;
+				this.buttonFinished.visible = true;
+			}
+			
+			
+			protected function dissassociateFromMedia(mediaID:Number, junctionType:Number, junctionTarget:Number):void
+			{
+				dissassociateFromMediaResult.token = merce.dissassociateFromMedia(mediaID, junctionType, junctionTarget);
+			}
+			
+			protected function buttonFinished_clickHandler(event:MouseEvent):void
+			{
+				this.visible = false;
+			}
+			
+			
+			protected function getAssociatedDesignersMedia(mediaID:Number):void
+			{
+				getAssociatedDesignersMediaResult.token = merce.getAssociatedDesignersMedia(mediaID);
+			}
+			
+			
+			protected function getAvailableDesignersMedia(mediaID:Number):void
+			{
+				getAvailableDesignersMediaResult.token = merce.getAvailableDesignersMedia(mediaID);
+			}
+			
+			
+			protected function createDesignerMediaAssoc(mediaID:Number, juctionTarget:Number):void
+			{
+				createDesignerMediaAssocResult.token = merce.createDesignerMediaAssoc(mediaID, juctionTarget);
+			}
+			
+			
+			protected function getAssociatedDancesMedia(mediaID:Number):void
+			{
+				getAssociatedDancesMediaResult.token = merce.getAssociatedDancesMedia(mediaID);
+			}
+			
+			
+			protected function getAvailableDancesMedia(mediaID:Number):void
+			{
+				getAvailableDancesMediaResult.token = merce.getAvailableDancesMedia(mediaID);
+			}
+			
+			
+			protected function createDanceMediaAssoc(mediaID:Number, juctionTarget:Number):void
+			{
+				createDanceMediaAssocResult.token = merce.createDanceMediaAssoc(mediaID, juctionTarget);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:CallResponder id="getAvailableDancersMediaResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="createDancerMediaAssocResult" result="handleInsertAssociation(event)" />
+		<s:CallResponder id="getAssociatedDancersMediaResult" />
+		<s:CallResponder id="dissassociateFromMediaResult" result="handleInsertAssociation(event)"/>
+		<s:CallResponder id="getAssociatedDesignersMediaResult" />
+		<s:CallResponder id="getAvailableDesignersMediaResult"/>
+		<s:CallResponder id="createAssocRecordForDecorResult"/>
+		<s:CallResponder id="createDesignerMediaAssocResult" result="handleInsertAssociation(event)"/>
+		<s:CallResponder id="getAssociatedDancesMediaResult"/>
+		<s:CallResponder id="getAvailableDancesMediaResult"/>
+		<s:CallResponder id="createDanceMediaAssocResult" result="handleInsertAssociation(event)"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Panel id="panelDesigners" x="7" y="11" width="284" height="472" title="Associate Dances with Media">
+		<s:ComboBox id="cboDancers" x="54" y="43" width="199" labelField="label">
+			<s:AsyncListView list="{getAvailableDancesMediaResult.lastResult}"/>
+		</s:ComboBox>
+		<s:Label x="95" y="23" text="Available Dances"/>
+		<s:Button id="buttonCancel" x="109" y="379" label="Cancel"
+				  click="buttonCancel_clickHandler(event)"/>
+		<s:Button id="buttonAssociateDancer" x="59" y="100" label="Associate Selected Dance"
+				  click="associateSelectedDancer(event)"/>
+		<s:DataGrid id="dataGrid" x="54" y="148" width="199" height="125">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="label" headerText="Associated Dances"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+			
+			<s:AsyncListView list="{getAssociatedDancesMediaResult.lastResult}"/>
+		</s:DataGrid>
+		<s:Button id="buttonDisassociateMediaDancer" x="62" y="294"
+				  label="Disassociate Selected Dance"
+				  click="dissaciateSelectedDancer(event)"/>
+		<s:Button id="buttonFinished" x="109" y="351" label="Finished"
+				  click="buttonFinished_clickHandler(event)"/>
+	</s:Panel>
+</s:Group>
+

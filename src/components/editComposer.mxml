@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="600" height="670" creationComplete="init()"
+		 >
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			
+			[bindable]
+			public var composerID:int;
+			
+			private var mode:String;
+			
+			protected function init():void{
+				//getcomposerDetailsResult.token = merce.getcomposerDetails(composerID);
+			}
+			
+			
+			public function getcomposerDetailsCall(composerID:int):void
+			{
+				getcomposerResult.token = merce.getComposers();
+				if (composerID > 0){	
+					mode = "edit";
+					getcomposerDetailsResult.token = merce.getComposerDetails(composerID);
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatecomposer.visible = false;
+					this.buttonFinish.label = 'Cancel';
+					getWorksForComposerResult.token = merce.getWorksForComposer(composerID);
+				}else{
+					mode = "new";
+					this.ticomposer_FN.text = '';
+					this.ticomposer_LN.text = '';
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatecomposer.visible = true;
+					this.buttonFinish.label = 'Cancel';
+				}
+			}
+			
+			protected function ticomposer_FN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreatecomposer.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatecomposer.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			protected function buttonSaveChanges_clickHandler(event:MouseEvent):void
+			{
+				updateComposerDetailsResult.token = merce.updateComposerDetails(composerID, this.ticomposer_FN.text, this.ticomposer_LN.text);
+				
+				//this.parentApplication.currentState = '';
+				this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getcomposerResult.token = merce.getComposers();
+			}
+			
+			
+			protected function insertNewcomposer(composer_FN:String, composer_LN:String):void
+			{
+				insertNewComposerResult.token = merce.insertNewComposer(this.ticomposer_FN.text, this.ticomposer_LN.text);
+				//this.parentApplication.currentState = '';
+				this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getcomposerResult.token = merce.getComposers();
+			}
+			
+			protected function buttonCreatecomposer_clickHandler(event:MouseEvent):void
+			{
+				this.insertNewcomposer(this.ticomposer_FN.text,this.ticomposer_LN.text);
+			}
+			
+			protected function buttonFinish_clickHandler(event:MouseEvent):void
+			{
+				this.parentApplication.refreshData();
+				this.parentApplication.currentState = '';
+				
+			}
+			
+			
+			
+			
+			
+			protected function getcomposer():void
+			{
+				getcomposerResult.token = merce.getComposers();
+			}
+			
+			
+
+			
+			protected function getComposerDetails(composerID:Number):void
+			{
+				getComposerDetailsResult.token = merce.getComposerDetails(composerID);
+			}
+			
+			
+		
+			
+			
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="insertNewcomposerResult"/>
+		<s:CallResponder id="getcomposerDetailsResult"/>
+		<s:CallResponder id="getcomposerResult"/>
+		<s:CallResponder id="getComposerDetailsResult"/>
+		<s:CallResponder id="insertNewComposerResult"/>
+		<s:CallResponder id="updateComposerDetailsResult"/>
+		<s:CallResponder id="getWorksForComposerResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextInput id="ticomposer_FN" x="10" y="42" width="250" change="ticomposer_FN_changeHandler(event)"
+				 text="{getcomposerDetailsResult.lastResult.getItemAt(0).composer_FN}"/>
+	<s:TextInput id="ticomposer_LN" x="10" y="116" width="250" text="{getcomposerDetailsResult.lastResult.getItemAt(0).composer_LN}"
+				 change="ticomposer_FN_changeHandler(event)"/>
+	<s:Label x="10" y="22" text="composer First Name:"/>
+	<s:Label x="10" y="96" text="composer Last Name:"/>
+	<s:Button id="buttonSaveChanges" x="14" y="182" width="124" label="Save Changes"
+			  click="buttonSaveChanges_clickHandler(event)"/>
+	<s:Button id="buttonCreatecomposer" x="14" y="211" width="124" label="Create composer"
+			  click="buttonCreatecomposer_clickHandler(event)"/>
+	<s:Button id="buttonFinish" x="14" y="240" width="124" label="Finish"
+			  click="buttonFinish_clickHandler(event)"/>
+	<s:DataGrid id="dg_Currentcomposers" x="14" y="285" width="386" height="312"
+				
+				>
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Current Composers"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1" composer_FN="composer_FN1" composer_LN="composer_LN1" data="data1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getcomposerResult.lastResult}"/>
+	</s:DataGrid>
+	<s:DataGrid id="dataGrid" x="311" y="42" width="279" height="219">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="Title" headerText="Compositions for Composer"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object  Title="Title1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getWorksForComposerResult.lastResult}"/>
+	</s:DataGrid>
+</s:Group>
+
+

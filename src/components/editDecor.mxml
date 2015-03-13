@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="600" height="670"
+		 >
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			
+			[bindable]
+			public var decorID:int;
+			
+			private var mode:String;
+			
+
+			
+			public function getdecorDetailsCall(decorID:int):void
+			{	
+				getDecorResult.token = merce.getDecor();
+				if (decorID > 0){	
+					mode = "edit";
+					getdecorDetailsResult.token = merce.getDecorDetails(decorID);
+					getWorksForDecorResult.token = merce.getWorksForDecor(decorID);
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatedecor.visible = false;
+					this.buttonFinish.label = 'Cancel';
+				}else{
+					mode = "new";
+					this.tidecor_FN.text = '';
+					this.tidecor_LN.text = '';
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatedecor.visible = false;
+					this.buttonFinish.label = 'Cancel';
+				}
+			}
+			
+			protected function tidecor_FN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreatedecor.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatedecor.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			protected function buttonSaveChanges_clickHandler(event:MouseEvent):void
+			{
+				merce.updatedecorDetails(decorID,this.tidecor_FN.text,this.tidecor_LN.text);
+				
+				//this.parentApplication.currentState = '';
+				//this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getDecorResult.token = merce.getDecor();
+			}
+			
+			
+			protected function insertNewdecor(decor_FN:String, decor_LN:String):void
+			{
+				insertNewdecorResult.token = merce.insertNewdecor(decor_FN, decor_LN);
+				//this.parentApplication.currentState = '';
+				this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getDecorResult.token = merce.getDecor();
+			}
+			
+			protected function buttonCreatedecor_clickHandler(event:MouseEvent):void
+			{
+				this.insertNewdecor(this.tidecor_FN.text,this.tidecor_LN.text);
+			}
+			
+			protected function buttonFinish_clickHandler(event:MouseEvent):void
+			{
+				this.parentApplication.refreshData();
+				this.parentApplication.currentState = '';
+				
+			}
+			
+			
+			protected function dg_Currentdecors_creationCompleteHandler(event:FlexEvent):void
+			{
+				//getDecorResult.token = merce.getDecor();
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			protected function getDecorDetails(decorID:Number):void
+			{
+				getDecorDetailsResult.token = merce.getDecorDetails(decorID);
+			}
+			
+			
+			protected function tidecor_LN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreatedecor.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatedecor.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			protected function getDecor():void
+			{
+				getDecorResult.token = merce.getDecor();
+			}
+			
+			
+			
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getdecorDetailsResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="insertNewdecorResult"/>
+		<s:CallResponder id="getDecorDetailsResult"/>
+		<s:CallResponder id="getDecorResult"/>
+		<s:CallResponder id="getWorksForDecorResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextInput id="tidecor_FN" x="10" y="42" width="250" change="tidecor_FN_changeHandler(event)"
+				 text="{getdecorDetailsResult.lastResult.getItemAt(0).decor_FN}"/>
+	<s:TextInput id="tidecor_LN" x="10" y="116" width="250" change="tidecor_LN_changeHandler(event)"
+				 text="{getdecorDetailsResult.lastResult.getItemAt(0).decor_LN}"/>
+	<s:Label x="10" y="22" text="decor First Name:"/>
+	<s:Label x="10" y="96" text="decor Last Name:"/>
+	<s:Button id="buttonSaveChanges" x="14" y="182" width="124" label="Save Changes"
+			  click="buttonSaveChanges_clickHandler(event)"/>
+	<s:Button id="buttonCreatedecor" x="14" y="211" width="124" label="Create decor"
+			  click="buttonCreatedecor_clickHandler(event)"/>
+	<s:Button id="buttonFinish" x="14" y="240" width="124" label="Finish"
+			  click="buttonFinish_clickHandler(event)"/>
+	<s:DataGrid id="dg_Currentdecors" x="14" y="285" width="386" height="312"
+				creationComplete="dg_Currentdecors_creationCompleteHandler(event)"
+				>
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Current Set Designers"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1" decor_FN="decor_FN1" decor_LN="decor_LN1" data="data1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getDecorResult.lastResult}"/>
+	</s:DataGrid>
+	<s:DataGrid id="dataGrid" x="393" y="42" width="197" height="219">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="workTitle" headerText="Associated Works"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object workTitle="workTitle1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getWorksForDecorResult.lastResult}"/>
+	</s:DataGrid>
+</s:Group>
+

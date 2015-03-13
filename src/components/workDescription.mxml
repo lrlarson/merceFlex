@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="446" height="416">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			
+			import valueObjects.WorkDescription;
+			
+			private var desc:String;
+			[Bindable]
+			private var dance_ID:Number;
+			
+			//private var workDescription:WorkDescription;
+			
+			protected function getWorkDescription(id:Number):void
+			{
+				getWorkDescriptionResult.token = merce.getWorkDescription(id);
+			}
+			
+			public function initDescriptionCall(danceID:Number):void{
+				this.getWorkDescription(danceID);
+			}
+			
+			protected function getWorkDescriptionResult_resultHandler(event:ResultEvent):void
+			{
+				
+				//trace(event.result[0].description);
+				desc = event.result[0].description;
+				dance_ID = event.result[0].id;
+				this.txtDescription.text = desc;
+					
+			}
+			protected function handleEdit():void{
+				this.btnSave.visible = true;
+			}
+			
+			protected function btnSave_clickHandler(event:MouseEvent):void
+			{
+				var workDescription:WorkDescription = new WorkDescription;
+				 workDescription.id = dance_ID;
+				 workDescription.description = txtDescription.text;
+				 this.updateWorkDescription(workDescription);
+				
+			}
+			
+			
+			protected function updateWorkDescription(workDescription:WorkDescription):void
+			{
+				updateWorkDescriptionResult.token = merce.updateWorkDescription(workDescription);
+			}
+			
+			protected function handleUpdateResponse():void{
+				this.btnSave.visible = false;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getWorkDescriptionResult" result="getWorkDescriptionResult_resultHandler(event)"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="updateWorkDescriptionResult" result="handleUpdateResponse()"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextArea id="txtDescription" x="33" y="40" width="381" height="336" change="handleEdit()"/>
+	<s:Label x="174" y="10" text="Dance Description"/>
+	<s:Button id="btnSave" visible="false" x="188" y="384" label="Save"
+			  click="btnSave_clickHandler(event)"/>
+</s:Group>

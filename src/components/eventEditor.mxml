@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 xmlns:valueObjects="valueObjects.*"
+		 xmlns:universal = "com.universalmind.controls.*"
+		 xmlns:ns2="*"
+		 width="952" height="600">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			import com.universalmind.controls.SmartCombo;
+			
+			import spark.events.GridSelectionEvent;
+			
+			private var intEventID:int;
+			private var strMode:String;
+			
+			protected function dataGrid_creationCompleteHandler(event:FlexEvent):void
+			{
+				getCurrentEventsResult.token = merce.getCurrentEventsALL('dateDown');
+			}
+			
+			
+			protected function comboBox_creationCompleteHandler(event:FlexEvent):void
+			{
+				getEventTypesResult.token = merce.getEventTypes();
+			}
+			
+			
+			protected function cboPublish_creationCompleteHandler(event:FlexEvent):void
+			{
+				getPublishTypesResult.token = merce.getPublishTypes();
+			}
+			
+			protected function eventSelection_click(event:GridSelectionEvent):void
+			{
+				this.strMode = 'UPDATE';
+				this.intEventID = this.dataGrid.selectedItem.id;
+				this.getSpecificEvent(this.dataGrid.selectedItem.id);
+				
+			}
+			
+			
+			protected function getSpecificEvent(event_ID:Number):void
+			{
+				getSpecificEventResult.token = merce.getSpecificEvent(event_ID);
+			}
+			
+			protected function getSpecificEventResult_resultHandler(event:ResultEvent):void
+			{
+			
+				
+			}
+			
+	         
+			protected function clearForm():void{
+				this.tiDateString.text = '';
+				this.txtDescription.text = '';
+				this.dateEnd.selectedDate = null;
+				this.tiLocation.text = '';
+				this.dateStart.selectedDate = null;
+				this.tiLocation.text = '';
+				this.tiEventName.text = '';
+				
+			}
+		
+			
+			protected function updateEvent(merceEvent:MerceEvents):void
+			{
+				updateEventResult.token = merce.updateEvent(merceEvent);
+			}
+			
+			protected function btnUpdateEvent_clickHandler(event:MouseEvent):void
+			{
+				this.merceEvent.eventDateString = this.tiDateString.text;
+				this.merceEvent.eventDescription = this.txtDescription.text;
+				this.merceEvent.eventEndDate = this.dateEnd.selectedDate;
+				this.merceEvent.eventLocation = this.tiLocation.text;
+				this.merceEvent.eventName = this.tiEventName.text;
+				this.merceEvent.eventPublish = this.cboPublish.selectedItem;
+				this.merceEvent.eventStartDate = this.dateStart.selectedDate;
+				this.merceEvent.eventType = this.cboSmart.selectedItem.data;
+				this.merceEvent.id = this.intEventID;
+				
+				this.updateEvent(merceEvent);
+				
+			}
+			
+			protected function updateEventResult_resultHandler(event:ResultEvent):void
+			{
+				getCurrentEventsResult.token = merce.getCurrentEventsALL('dateDown');
+				this.clearForm();
+				
+			}
+			
+			protected function refreshDG():void{
+				getCurrentEventsResult.token = merce.getCurrentEventsALL('dateDown');
+			}
+			
+			protected function btnBeginNewEvent_clickHandler(event:MouseEvent):void
+			{
+				this.strMode = 'NEW';
+				this.clearForm();
+				this.btnSaveNewEvent.visible = true;
+			}
+			
+			
+			protected function createNewEvent(merceEvent:MerceEvents):void
+			{
+				createNewEventResult.token = merce.createNewEvent(merceEvent);
+			}
+			
+			protected function buildNewEvent():void{
+				this.merceEvent.eventDateString = this.tiDateString.text;
+				this.merceEvent.eventDescription = this.txtDescription.text;
+				this.merceEvent.eventEndDate = this.dateEnd.selectedDate;
+				this.merceEvent.eventLocation = this.tiLocation.text;
+				this.merceEvent.eventName = this.tiEventName.text;
+				this.merceEvent.eventPublish = this.cboPublish.selectedItem;
+				this.merceEvent.eventStartDate = this.dateStart.selectedDate;
+				this.merceEvent.eventType = this.cboSmart.selectedItem.data;
+				this.createNewEvent(merceEvent);
+			}
+			
+			protected function createNewEventResult_resultHandler(event:ResultEvent):void
+			{
+				getCurrentEventsResult.token = merce.getCurrentEventsALL('dateDown');
+				this.clearForm();
+				this.btnSaveNewEvent.visible = false;
+				
+			}
+			
+			protected function btnExit_clickHandler(event:MouseEvent):void
+			{
+				
+		 this.parentApplication.currentState = '';
+			}
+			
+			protected function btnSaveNewEvent_clickHandler(event:MouseEvent):void
+			{
+				this.buildNewEvent();
+				
+			}
+			
+			protected function getCurrentEventsResult_resultHandler(event:ResultEvent):void
+			{
+				trace('here we are');
+				
+				
+			}
+			
+			
+			protected function getCurrentEventsALL(filter:String):void
+			{
+				getCurrentEventsALLResult.token = merce.getCurrentEventsALL(filter);
+			}
+			
+			
+			protected function cboTestType_creationCompleteHandler(event:FlexEvent):void
+			{
+				getEventTypesResult2.token = merce.getEventTypes();
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<valueObjects:MerceEvents id="merceEvent"  />
+			
+		<s:CallResponder id="getCurrentEventsResult" result="getCurrentEventsResult_resultHandler(event)"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getEventTypesResult"/>
+		<s:CallResponder id="getPublishTypesResult"/>
+		<s:CallResponder id="getSpecificEventResult"/>
+		<s:CallResponder id="updateEventResult" result="updateEventResult_resultHandler(event)"/>
+		<s:CallResponder id="createNewEventResult" result="createNewEventResult_resultHandler(event)"/>
+		<s:CallResponder id="getCurrentEventsALLResult"/>
+		<s:CallResponder id="getEventTypesResult2"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:DataGrid id="dataGrid" x="14" y="25" width="928" height="168"
+				creationComplete="dataGrid_creationCompleteHandler(event)"
+				selectionChange="eventSelection_click(event)" dataProvider="{getCurrentEventsResult.lastResult}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="eventLocation" headerText="eventLocation"></s:GridColumn>
+				<s:GridColumn dataField="eventStartDate" headerText="eventStartDate"></s:GridColumn>
+				<s:GridColumn dataField="eventDateString" headerText="eventDateString"></s:GridColumn>
+				<s:GridColumn dataField="eventName" headerText="eventName"></s:GridColumn>
+				<s:GridColumn dataField="eventEndDate" headerText="eventEndDate"></s:GridColumn>
+				<s:GridColumn dataField="eventType" headerText="eventType"></s:GridColumn>
+				<s:GridColumn dataField="eventPublish" headerText="Publish"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object id="id1" eventDateString="eventDateString1"
+					   eventDescription="eventDescription1" eventEndDate="eventEndDate1"
+					   eventLocation="eventLocation1" eventName="eventName1"
+					   eventStartDate="eventStartDate1" eventType="eventType1" eventWeb="eventWeb1"></fx:Object>
+		</s:typicalItem>
+	</s:DataGrid>
+	<s:Label x="14" y="221" text="Event Name:"/>
+	<s:TextInput id="tiEventName" x="89" y="211" width="805" text="{getSpecificEventResult.lastResult.getItemAt(0).eventName}"/>
+	<s:Label x="14" y="283" text="Location:"/>
+	<s:TextInput id="tiLocation" x="89" y="273" width="299" text="{getSpecificEventResult.lastResult.getItemAt(0).eventLocation}"/>
+	<s:Label x="14" y="320" text="Start Date:"/>
+	<s:Label x="14" y="353" text="End Date:"/>
+	<s:Label x="14" y="384" text="Date String:" />
+	<s:Label x="14" y="417" text="Event Type:"/>
+	<s:TextInput id="tiDateString" x="89" y="374" width="299" text="{getSpecificEventResult.lastResult.getItemAt(0).eventDateString}"/>
+	<s:ComboBox id="cboEventTypes" x="89" y="410"
+				   selectedItem="{getSpecificEventResult.lastResult.getItemAt(0).eventType}" visible="false">
+		<s:dataProvider>
+			<mx:ArrayList>
+				<fx:int>1</fx:int>
+				<fx:int>2</fx:int>
+				<fx:int>3</fx:int>
+				<fx:int>4</fx:int>
+				<fx:int>5</fx:int>
+			</mx:ArrayList>
+		</s:dataProvider>
+	</s:ComboBox>
+	<s:TextArea id="txtDescription" x="463" y="268" width="454" height="230" text="{getSpecificEventResult.lastResult.getItemAt(0).eventDescription}"/>
+	<s:Label x="463" y="243" text="Event Description"/>
+	<s:ComboBox id="cboPublish" x="89" y="453"
+				  selectedItem="{getSpecificEventResult.lastResult.getItemAt(0).eventPublish}">
+		<s:dataProvider>
+			<mx:ArrayList>
+				<fx:int>0</fx:int>
+				<fx:int>1</fx:int>
+			</mx:ArrayList>
+		</s:dataProvider>
+		
+	</s:ComboBox>
+	<s:Label x="13" y="456" text="Publish:"/>
+	<mx:DateField id="dateStart" x="91" y="312" selectedDate="{getSpecificEventResult.lastResult.getItemAt(0).eventStartDate}"/>
+	<mx:DateField id="dateEnd" x="91" y="344" selectedDate="{getSpecificEventResult.lastResult.getItemAt(0).eventEndDate}"/>
+	<s:Button id="btnUpdateEvent" x="89" y="523" label="Update Event"
+			  click="btnUpdateEvent_clickHandler(event)"/>
+	<s:Label x="89" y="480" fontSize="10" text="1 = Publish 0 = DO NOT Publish"/>
+	<s:Label x="87" y="299" fontSize="10" text="Location = City [State] Country"/>
+	<s:Label x="251" y="407" fontSize="10" text="Event Types:"/>
+	<s:Label x="251" y="419" fontSize="10" text="1 = Performance"/>
+	<s:Label x="331" y="419" fontSize="10" text="3 = Exibition"/>
+	<s:Label x="331" y="428" fontSize="10" text="4 = Master Class"/>
+	<s:Label x="331" y="438" fontSize="10" text="5 = Film"/>
+	<s:Label x="251" y="429" fontSize="10" text="2 = Showing"/>
+	<s:Button id="btnBeginNewEvent" x="214" y="522" label="Clear Form to Prepare for New Event"
+			  click="btnBeginNewEvent_clickHandler(event)"/>
+	<s:Button id="btnSaveNewEvent" x="454" y="522" label="Save New Event" visible="true"
+			  click="btnSaveNewEvent_clickHandler(event)"/>
+	<s:Label x="420" y="5" text="Click to Edit Event"/>
+	<s:Button id="btnExit" x="847" y="569" label="Exit" click="btnExit_clickHandler(event)"/>
+	<s:ComboBox id="cboTestType" x="88" y="408" visible="false"
+				creationComplete="cboTestType_creationCompleteHandler(event)" labelField="label" selectedIndex="{getSpecificEventResult.lastResult.getItemAt(0).eventType-1}">
+		<s:AsyncListView list="{getEventTypesResult2.lastResult}"/>
+	</s:ComboBox>
+	<ns2:comboBox2 x="86" y="412" id="cboSmart"  dataProvider="{getEventTypesResult2.lastResult}" labelField="label" selectedValue="{getSpecificEventResult.lastResult.getItemAt(0).eventType}"/>
+</s:Group>
+

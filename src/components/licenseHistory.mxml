@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="754" height="508">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import valueObjects.LicenseHistory;
+			private var mode:String = 'ADD';
+			
+			protected function dataGrid_creationCompleteHandler(event:FlexEvent):void
+			{
+				getAllLicenseHistoryResult.token = merce.getAllLicenseHistory();
+			}
+			
+			protected function dataGrid_doubleClickHandler(event:MouseEvent):void
+			{
+				 getLicenseByID(this.dataGrid.selectedItem.id);
+				 this.stateChange('beginEdit');
+				
+			}
+			
+			
+			protected function getLicenseByID(ID:Number):void
+			{
+				getLicenseByIDResult.token = merce.getLicenseByID(ID);
+			}
+			
+			protected function getLicenseByIDResult_resultHandler(event:ResultEvent):void
+			{
+				
+				this.mode = 'EDIT';
+				this.tiCompany.text = event.result[0].Company;
+				this.tiDance.text = event.result[0].Dance;
+				this.tiStager.text = event.result[0].Stager;
+				this.tiType.text = String(event.result[0].licType);
+				this.tiRefYear.text = String(event.result[0].referenceYear);
+				this.tiYear.text = event.result[0].Year
+			}
+			
+			
+			
+			
+			protected function upateLicenseHistory(licenseHistory:LicenseHistory):void
+			{
+				upateLicenseHistoryResult.token = merce.upateLicenseHistory(licenseHistory);
+			}
+			
+			protected function btnSaveEdits_clickHandler(event:MouseEvent):void
+			{
+				var updatedLicense:LicenseHistory = new LicenseHistory();
+				updatedLicense.Company = this.tiCompany.text;
+				updatedLicense.Dance = this.tiDance.text;
+				updatedLicense.id = this.dataGrid.selectedItem.id;
+				updatedLicense.licType = int(this.tiType.text);
+				updatedLicense.Stager = this.tiStager.text;
+				updatedLicense.Year = this.tiYear.text;
+				updatedLicense.referenceYear = int(this.tiRefYear.text);
+				this.upateLicenseHistory(updatedLicense);
+				this.stateChange('saveEdit');
+			}
+			
+			protected function upateLicenseHistoryResult_resultHandler(event:ResultEvent):void
+			{
+				getAllLicenseHistoryResult.token = merce.getAllLicenseHistory();
+				
+			}
+			
+			protected function btnAddNew_clickHandler(event:MouseEvent):void
+			{
+				this.tiCompany.text = '';
+				 this.tiDance.text = '';
+				 this.tiType.text = '';
+				this.tiStager.text = '';
+				  this.tiYear.text= '';
+				 this.tiRefYear.text = '';
+				 this.stateChange('addNew');
+				
+			}
+			
+			private function makeBlank():void{
+				this.tiCompany.text = '';
+				this.tiDance.text = '';
+				this.tiType.text = '';
+				this.tiStager.text = '';
+				this.tiYear.text= '';
+				this.tiRefYear.text = '';
+			}
+			
+			private function stateChange(state:String):void{
+				if (state == 'addNew'){
+					this.mode= 'ADD';
+					this.btnSaveNew.visible = true;
+					this.btnSaveEdits.visible = false;
+					this.btnAddNew.visible = false;
+					this.btnDelete.visible = false;
+					this.makeBlank();
+				}else if (state == 'saveEdit'){
+					this.btnSaveNew.visible = false;
+					this.btnSaveEdits.visible = false;
+					this.btnAddNew.visible = true;
+					this.btnDelete.visible = false;
+					this.makeBlank();
+					
+				}else if (state == 'saveNew'){
+					this.mode= 'ADD';
+					this.btnSaveNew.visible = false;
+					this.btnSaveEdits.visible = false;
+					this.btnAddNew.visible = true;
+					this.btnDelete.visible = false;
+					this.makeBlank();
+				} else if (state == 'beginEdit'){
+					this.mode= 'EDIT';
+					this.btnSaveNew.visible = false;
+					this.btnSaveEdits.visible = true;
+					this.btnAddNew.visible = true;
+					this.btnDelete.visible = true;
+				}
+			}
+			
+			
+			protected function insertNewLicenseHistory(licenseHistory:LicenseHistory):void
+			{
+				insertNewLicenseHistoryResult.token = merce.insertNewLicenseHistory(licenseHistory);
+			}
+			
+			protected function handleSaveNewClick(event:MouseEvent):void{
+				var updatedLicense:LicenseHistory = new LicenseHistory();
+				updatedLicense.Company = this.tiCompany.text;
+				updatedLicense.Dance = this.tiDance.text;
+				updatedLicense.licType = int(this.tiType.text);
+				updatedLicense.Stager = this.tiStager.text;
+				updatedLicense.Year = this.tiYear.text;
+				updatedLicense.referenceYear = int(this.tiRefYear.text);
+				this.insertNewLicenseHistory(updatedLicense);
+				
+				
+			}
+			
+			protected function insertNewLicenseHistoryResult_resultHandler(event:ResultEvent):void
+			{
+				getAllLicenseHistoryResult.token = merce.getAllLicenseHistory();
+				this.stateChange('saveNew');
+				
+			}
+			
+			
+			protected function deleteLicenseHistoryByID(ID:Number):void
+			{
+				deleteLicenseHistoryByIDResult.token = merce.deleteLicenseHistoryByID(ID);
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				this.deleteLicenseHistoryByID(this.dataGrid.selectedItem.id);
+				
+			}
+			
+			protected function deleteLicenseHistoryByIDResult_resultHandler(event:ResultEvent):void
+			{
+				getAllLicenseHistoryResult.token = merce.getAllLicenseHistory();
+				this.stateChange('saveNew');
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getAllLicenseHistoryResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getLicenseByIDResult" result="getLicenseByIDResult_resultHandler(event)"/>
+		<s:CallResponder id="upateLicenseHistoryResult" result="upateLicenseHistoryResult_resultHandler(event)"/>
+		<s:CallResponder id="insertNewLicenseHistoryResult" result="insertNewLicenseHistoryResult_resultHandler(event)"/>
+		<s:CallResponder id="deleteLicenseHistoryByIDResult" result="deleteLicenseHistoryByIDResult_resultHandler(event)"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:DataGrid id="dataGrid" x="25" y="46" width="719"
+				creationComplete="dataGrid_creationCompleteHandler(event)"
+				dataProvider="{getAllLicenseHistoryResult.lastResult}" requestedRowCount="10"  
+				 click="dataGrid_doubleClickHandler(event)" >
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="Year" headerText="Year" width="80"></s:GridColumn>
+				<s:GridColumn dataField="Dance" headerText="Dance" width="220"></s:GridColumn>
+				<s:GridColumn dataField="licType" headerText="Type" width="50"></s:GridColumn>
+				<s:GridColumn dataField="Stager" headerText="Stager" width="130"></s:GridColumn>
+				<s:GridColumn dataField="Company" headerText="Company" width="160"></s:GridColumn>
+				<s:GridColumn dataField="referenceYear" headerText="Ref. Year" width="40"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object id="id1" Company="Company1" Dance="Dance1" licType="licType1"
+					   referenceYear="referenceYear1" Stager="Stager1" Year="Year1"></fx:Object>
+		</s:typicalItem>
+	</s:DataGrid>
+	<s:Label x="322" y="9" fontSize="15" text="License History"/>
+	<s:TextInput id="tiYear" x="124" y="358" width="129"/>
+	<s:Label x="25" y="363" text="Year Desciption:"/>
+	<s:Label x="25" y="403" text="Dance:"/>
+	<s:Label x="25" y="443" text="Lic. Type:"/>
+	<s:Label x="409" y="364" text="Stager:"/>
+	<s:Label x="409" y="404" text="Company:"/>
+	<s:Label x="409" y="445" text="Ref. Year:"/>
+	<s:TextInput id="tiDance" x="124" y="399" width="276"/>
+	<s:TextInput id="tiType" x="124" y="440" width="32"/>
+	<s:TextInput id="tiStager" x="468" y="358" width="276"/>
+	<s:TextInput id="tiCompany" x="468" y="399" width="276"/>
+	<s:TextInput id="tiRefYear" x="468" y="440" width="79"/>
+	<s:Label x="341" y="32" text="Click to Edit"/>
+	<s:Label x="168" y="446" fontStyle="italic" text="1 = Educational, 2 = Professional"/>
+	<s:Label x="259" y="364" fontStyle="italic" text="entries like 90-93 OK here"/>
+	<s:Label x="561" y="447" fontStyle="italic" text="Must be single year entry"/>
+	<s:Button id="btnSaveEdits" visible="false" x="183" y="477" label="Save Edits"
+			  click="btnSaveEdits_clickHandler(event)"/>
+	<s:Button id="btnAddNew" x="275" y="477" label="Add New" click="btnAddNew_clickHandler(event)"/>
+	<s:Button id="btnSaveNew" visible="false" x="355" y="477" label="Save New" click="handleSaveNewClick(event)"/>
+	<s:Button id="btnDelete" visible="true" x="62" y="477" label="Delete Selected"
+			  click="btnDelete_clickHandler(event)"/>
+	
+</s:Group>

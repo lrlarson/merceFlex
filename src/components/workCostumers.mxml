@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:merce="services.merce.*"
+		 width="400" height="550">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			private var danceTarget:Number;
+			
+			import valueObjects.CostumerAssociation;
+			
+			[Bindable]
+			private var costumerAssociation:CostumerAssociation;
+			
+			
+			protected function getAvailableCostumers(danceID:Number):void
+			{
+				getAvailableCostumersResult.token = merce.getAvailableCostumers(danceID);
+			}
+			
+			public function initCostumerCall(danceID:Number):void{
+				this.danceTarget = danceID;
+				this.getAvailableCostumers(danceID);
+				this.getCostumersForWork(danceID);
+				this.buttonCreateAssociation.visible = true;
+				this.buttonSaveAssociation.visible = false;
+				this.tiNotes.text = '';
+			}
+			
+			
+			protected function getCostumersForWork(danceID:Number):void
+			{
+				getCostumersForWorkResult.token = merce.getCostumersForWork(danceID);
+			}
+			
+			
+			
+			protected function buttonCreateAssociation_clickHandler(event:MouseEvent):void
+			{
+				if(this.cboAvailable.selectedItem){
+				this.createAssocRecordForCostumer2(danceTarget,this.cboAvailable.selectedItem.data,this.tiNotes.text);
+				this.getAvailableCostumers(danceTarget);
+				this.getCostumersForWork(danceTarget);
+				}else{
+					Alert.show('Please select an available costumer');
+					return;
+				}
+			}
+			
+			protected function buttonDeleteAssociation_clickHandler(event:MouseEvent):void
+			{
+				if(this.dataGrid.selectedItem){
+				this.deleteCostumerAssociation(this.dataGrid.selectedItem.id);
+				this.getAvailableCostumers(danceTarget);
+				this.getCostumersForWork(danceTarget);
+				this.tiNotes.text = '';
+				}else{
+					Alert.show('Please select a costumer association to delete');
+				}
+			}
+			
+			
+			protected function deleteCostumerAssociation(id:Number):void
+			{
+				deleteCostumerAssociationResult.token = merce.deleteCostumerAssociation(id);
+			}
+			
+			
+			protected function createAssocRecordForCostumer2(danceID:Number, costumerID:Number, notes:String):void
+			{
+				createAssocRecordForCostumerResult2.token = merce.createAssocRecordForCostumer(danceID, costumerID, notes);
+			}
+			
+			protected function buttonEditAssociation_clickHandler(event:MouseEvent):void
+			{
+				this.getAssociationCostumer(this.dataGrid.selectedItem.id);
+				this.buttonCreateAssociation.visible = false;
+				this.buttonSaveAssociation.visible = true;
+			}
+			
+			protected function getAssociationCostumer(id:Number):void
+			{
+				getAssociationCostumerResult.token = merce.getAssociationCostumer(id);
+			}
+			
+			protected function buttonSaveAssociation_clickHandler(event:MouseEvent):void
+			{
+				this.updateCostumerAssociation(this.dataGrid.selectedItem.id,this.tiNotes.text);
+				this.buttonCreateAssociation.visible = true;
+				this.buttonSaveAssociation.visible = false;
+				
+			}
+			
+			
+			protected function updateCostumerAssociation(id:Number, notes:String):void
+			{
+				updateCostumerAssociationResult.token = merce.updateCostumerAssociation(id, notes);
+			}
+			
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getAvailableCostumersResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getCostumersForWorkResult"/>
+		<s:CallResponder id="createAssocRecordForCostumerResult"/>
+		<s:CallResponder id="deleteCostumerAssociationResult"/>
+		<s:CallResponder id="createAssocRecordForCostumerResult2"/>
+		<s:CallResponder id="getAssociationCostumerResult" result="costumerAssociation = getAssociationCostumerResult.lastResult[0] as CostumerAssociation"/>
+		<s:CallResponder id="updateCostumerAssociationResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label x="137" y="29" text="Costumer / Dance Data"/>
+	<s:ComboBox id="cboAvailable" x="105" y="101" width="204" labelField="label"
+				selectedItem="{{label:'- Select Costumer ---'}}">
+		<s:AsyncListView list="{getAvailableCostumersResult.lastResult}"/>
+	</s:ComboBox>
+	<s:DataGrid id="dataGrid" x="80" y="346" width="241" requestedRowCount="4">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Costumers for Work"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getCostumersForWorkResult.lastResult}"/>
+	</s:DataGrid>
+	<s:Label x="127" y="75" width="146" text="Available Costumers"/>
+	<s:Button id="buttonCreateAssociation" x="112" y="268" label="Create Costumer Association"
+			  click="buttonCreateAssociation_clickHandler(event)"/>
+	<s:Button id="buttonDeleteAssociation" x="116" y="515" label="Delete Selected Association"
+			  click="buttonDeleteAssociation_clickHandler(event)"/>
+	<s:TextArea id="tiNotes" x="104" y="156" height="55" text="{costumerAssociation.notes}"/>
+	<s:Label x="104" y="219" text="Notes"/>
+	<s:Button id="buttonEditAssociation" x="116" y="483" width="169"
+			  label="Edit Selected Association" click="buttonEditAssociation_clickHandler(event)"/>
+	<s:Button id="buttonSaveAssociation" x="112" y="280" width="176" label="Save Edited Association"
+			  click="buttonSaveAssociation_clickHandler(event)"/>
+</s:Group>

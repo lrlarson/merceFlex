@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 xmlns:valueObjects="valueObjects.*"
+		 xmlns:components="components.*"
+		 width="888" height="750">
+	<fx:Declarations>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getDanceDetailsResult"
+						 result="danceDetails = getDanceDetailsResult.lastResult[0] as DanceDetails"/>
+		<valueObjects:DanceDetails id="danceDetails"/>
+		<s:CallResponder id="updateDanceDetailsResult"/>
+		<s:CallResponder id="createDanceResult"/>
+		<s:CallResponder id="getDancersResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			
+			[bindable]
+			public var danceID:Number;
+			
+			protected var editMode:String;
+			
+			
+			
+			protected function editDance_clickHandler(event:MouseEvent):void
+			{
+				
+				danceDetails.id = danceID;
+				danceDetails.workTitle = workTitleTextInput.text;
+				danceDetails.workLengthString = workLengthStringTextInput.text;
+				if (this.revivalYearDateField.selectedDate != null){
+				danceDetails.revivalYear = revivalYearDateField.selectedDate;
+				}else{
+					danceDetails.revivalYear = this.premiereDateDateField.selectedDate;
+				}
+				danceDetails.revivalNotes = revivalNotesTextInput.text;
+				danceDetails.premiereCity = premiereCityTextInput.text;
+				danceDetails.length = parseInt(lengthTextInput.text);
+				danceDetails.premiereCountry = premiereCountryTextInput.text;
+				danceDetails.premiereString = premiereStringTextInput.text;
+				danceDetails.premiereVenue = premiereVenueTextInput.text;
+				danceDetails.revivalLocation = revivalLocationTextInput.text;
+				danceDetails.premiereDate = premiereDateDateField.selectedDate;
+				danceDetails.workImage = this.imageNamwTextInput.text;
+				danceDetails.workImageNotes = this.imageNotesTextInput.text;
+				danceDetails.capsuleURL = this.ti_capsuleURL.text;
+				updateDanceDetails(danceDetails);
+				this.parentApplication.currentState = '';
+			}
+			
+			public function danceDetailCall(danceID:int):void{
+				if (danceID > 0){
+				this.editMode = 'edit';
+				getDanceDetailsResult.token = merce.getDanceDetails(danceID);
+				this.buttonEditDance.visible = false;
+				this.buttonCreateDance.visible = false;
+				this.makeInvisible();
+			 	}else{
+					this.editMode = 'add';
+					premiereDateDateField.selectedDate = null;
+					workTitleTextInput.text = '';
+					workLengthStringTextInput.text = '';
+					revivalYearDateField.selectedDate = null;
+					revivalNotesTextInput.text = '';
+					premiereCityTextInput.text = '';
+					lengthTextInput.text = '';
+					premiereCountryTextInput.text = '';
+					premiereStringTextInput.text = '';
+					premiereVenueTextInput.text = '';
+					revivalLocationTextInput.text = '';
+					this.ti_capsuleURL.text = '';
+					this.imageNamwTextInput.text = '';
+					this.imageNotesTextInput.text = '';
+					this.buttonEditDance.visible = false;
+					this.buttonCreateDance.visible = false;
+					this.makeInvisible();
+				}
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				this.parentApplication.currentState = '';
+			}
+			
+			protected function handleEdit():void{
+				if (this.editMode == 'edit'){
+				this.buttonEditDance.visible = true;
+				this.buttonCreateDance.visible = false;
+				} else {
+					this.buttonCreateDance.visible = true;
+					this.buttonEditDance.visible = false;
+				}
+			}
+			
+			
+			protected function updateDanceDetails(danceDetails:Object):void
+			{
+				merce.updateDanceDetails(
+				 
+					danceDetails.id,
+					danceDetails.workTitle,
+					danceDetails.length ,
+					danceDetails.workLengthString , 
+					danceDetails.premiereDate,
+					danceDetails.premiereVenue,
+					danceDetails.premiereString ,
+					danceDetails.premiereCity ,
+					danceDetails.premiereCountry ,
+					danceDetails.revivalYear,
+					danceDetails.revivalLocation,
+					danceDetails.revivalNotes ,
+					danceDetails.workImage,
+					danceDetails.workImageNotes,
+					danceDetails.capsuleURL
+				);
+			}
+			
+			
+			protected function createDance(danceDetails:Object):void
+			{
+				createDanceResult.token = merce.createDance(danceDetails);
+			}
+			
+			protected function buttonCreateDance_clickHandler(event:MouseEvent):void
+			{
+				danceDetails.workTitle = workTitleTextInput.text;
+				danceDetails.workLengthString = workLengthStringTextInput.text;
+				if (this.revivalYearDateField.selectedDate != null){
+					danceDetails.revivalYear = revivalYearDateField.selectedDate;
+				}else{
+					danceDetails.revivalYear = this.premiereDateDateField.selectedDate;
+				}
+				danceDetails.revivalNotes = revivalNotesTextInput.text;
+				danceDetails.premiereCity = premiereCityTextInput.text;
+				danceDetails.length = parseInt(lengthTextInput.text);
+				danceDetails.premiereCountry = premiereCountryTextInput.text;
+				danceDetails.premiereString = premiereStringTextInput.text;
+				danceDetails.premiereVenue = premiereVenueTextInput.text;
+				danceDetails.revivalLocation = revivalLocationTextInput.text;
+				danceDetails.premiereDate = premiereDateDateField.selectedDate;
+				danceDetails.workImage = this.imageNamwTextInput.text;
+				danceDetails.workImageNotes = this.imageNotesTextInput.text;
+				danceDetails.capsuleURL = this.ti_capsuleURL.text;
+				this.createDance(danceDetails);
+				this.parentApplication.refreshData();
+				this.parentApplication.currentState = '';
+				this.parentApplication.refreshData();
+				
+			}
+			
+			protected function buttonAssocDancers_clickHandler(event:MouseEvent):void
+			{
+				this.workCostumers.visible = false;
+				this.workDecor.visible = false;
+				this.workLighting.visible = false;
+				this.workDancers.visible = true;
+				this.workDescription.visible = false;
+				this.workDancers.initCall(danceID);
+			}
+			
+			protected function makeInvisible():void{
+				this.workDancers.visible = false;
+				this.workDecor.visible = false;
+				this.workLighting.visible = false;
+				this.workMusic.visible = false;
+				this.workDescription.visible = false;
+				this.workCostumers.visible = false;
+			}
+			
+			protected function buttonAssocCostumers_clickHandler(event:MouseEvent):void
+			{
+				this.workDancers.visible = false;
+				this.workDecor.visible = false;
+				this.workLighting.visible = false;
+				this.workMusic.visible = false;
+				this.workCostumers.visible = true;
+				this.workDescription.visible = false;
+				this.workCostumers.initCostumerCall(danceID);
+			}
+			
+			protected function buttonAssocLighting_clickHandler(event:MouseEvent):void
+			{
+				this.workDancers.visible = false;
+				this.workMusic.visible = false;
+				this.workLighting.visible = true;
+				this.workDecor.visible = false;
+				this.workCostumers.visible = false;
+				this.workDescription.visible = false;
+				this.workLighting.initLightingCall(danceID);
+				
+			}
+			
+			protected function buttonAssociateMusic_clickHandler(event:MouseEvent):void
+			{
+				this.workDancers.visible = false;
+				this.workLighting.visible = false;
+				this.workDecor.visible = false;
+				this.workCostumers.visible = false;
+				this.workMusic.visible = true;
+				this.workDescription.visible = false;
+				this.workMusic.initMusicCall(danceID);
+				
+			}
+			
+			protected function buttonAssocDecor_clickHandler(event:MouseEvent):void
+			{
+				this.workDancers.visible = false;
+				this.workLighting.visible = false;
+				this.workMusic.visible = false;
+				this.workDecor.visible = true;
+				this.workCostumers.visible = false;
+				this.workDecor.initDecorCall(danceID);
+				this.workDescription.visible = false;
+			}
+			
+			
+			
+			
+			
+			protected function btn_WorkDescription_clickHandler(event:MouseEvent):void
+			{
+				this.workDancers.visible = false;
+				this.workLighting.visible = false;
+				this.workMusic.visible = false;
+				this.workDecor.visible = false;
+				this.workCostumers.visible = false;
+				this.workDescription.visible = true;
+				this.workDescription.initDescriptionCall(danceID);
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Form width="436" height="740" defaultButton="{buttonEditDance}">
+		<s:FormItem width="403" label="WorkTitle">
+			<s:TextInput id="workTitleTextInput" width="267" text="{danceDetails.workTitle}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="402" label="PremiereDate">
+			<mx:DateField id="premiereDateDateField" width="208"
+						  selectedDate="{danceDetails.premiereDate}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="401" label="PremiereCity">
+			<s:TextInput id="premiereCityTextInput" width="266" text="{danceDetails.premiereCity}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="401" label="PremiereCountry">
+			<s:TextInput id="premiereCountryTextInput" width="267"
+						 text="{danceDetails.premiereCountry}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="401" label="PremiereString">
+			<s:TextInput id="premiereStringTextInput" width="265"
+						 text="{danceDetails.premiereString}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="401" label="PremiereVenue">
+			<s:TextInput id="premiereVenueTextInput" width="265" text="{danceDetails.premiereVenue}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="289" label="Length">
+			<s:TextInput id="lengthTextInput" text="{danceDetails.length}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="403" label="WorkLengthString">
+			<s:TextInput id="workLengthStringTextInput" width="264"
+						 text="{danceDetails.workLengthString}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem label="RevivalYear">
+			<mx:DateField id="revivalYearDateField" selectedDate="{danceDetails.revivalYear}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="404" label="RevivalNotes">
+			<s:TextArea id="revivalNotesTextInput" width="262" height="44" change="handleEdit();"
+						text="{danceDetails.revivalNotes}"/>
+		</s:FormItem>
+		
+		
+		<s:FormItem width="403" label="RevivalLocation">
+			<s:TextInput id="revivalLocationTextInput" width="262"
+						 text="{danceDetails.revivalLocation}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="403" label="Image Name">
+			<s:TextInput id="imageNamwTextInput" width="262"
+						 text="{danceDetails.workImage}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:FormItem width="403" label="Image Notes">
+			<s:TextInput id="imageNotesTextInput" width="262"
+						 text="{danceDetails.workImageNotes}" change="handleEdit();"/>
+		</s:FormItem>
+	
+	
+		<s:FormItem width="403" label="Capsule URL">
+			<s:TextInput id="ti_capsuleURL" width="262"
+						 text="{danceDetails.capsuleURL}" change="handleEdit();"/>
+		</s:FormItem>
+		<s:Button id="buttonEditDance" label="Save Edits" click="editDance_clickHandler(event)"/>
+	</s:Form>
+	<s:Button x="96" y="718" label="Cancel" click="button3_clickHandler(event)"/>
+	<s:Button id="buttonCreateDance" x="174" y="718" label="Create Dance"
+			  click="buttonCreateDance_clickHandler(event)"/>
+	<components:workDancer x="461" y="109" id="workDancers" visible="false" >
+	</components:workDancer>
+	<s:Button id="buttonAssocDancers" x="461" y="10" label="Associate Dancers"
+			  click="buttonAssocDancers_clickHandler(event)"/>
+	<components:workCostumers x="462" y="106" id="workCostumers" visible="false">
+	</components:workCostumers>
+	<s:Button id="buttonAssocCostumers" x="599" y="10" label="Associate Costumers"
+			  click="buttonAssocCostumers_clickHandler(event)"/>
+	<components:workDecor x="461" y="94" id="workDecor" visible="false">
+	</components:workDecor>
+	<s:Button id="buttonAssocDecor" x="745" y="10" width="124" label="Associate Decor"
+			  click="buttonAssocDecor_clickHandler(event)"/>
+	<components:workLighting id="workLighting" x="461" y="84" visible="false">
+	</components:workLighting>
+	<s:Button id="buttonAssocLighting" x="461" y="39" width="121" label="Associate Lighting"
+			  click="buttonAssocLighting_clickHandler(event)"/>
+	<components:workMusic x="456" y="90" id="workMusic" visible="false">
+	</components:workMusic>
+	<s:Button id="buttonAssociateMusic" x="599" y="39" width="134" label="Associate Music"
+			  click="buttonAssociateMusic_clickHandler(event)"/>
+	<components:workDescription id="workDescription" visible="true" x="460" y="101" width="418">
+		</components:workDescription>
+	<s:Button id="btn_WorkDescription" x="741" y="39" width="128" label="Edit Work Description"
+			  click="btn_WorkDescription_clickHandler(event)"/>
+</s:Group>

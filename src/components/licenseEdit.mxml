@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="930" height="468" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import spark.events.GridSelectionEvent;
+			
+			import valueObjects.License;
+			
+			private var strMode:String = 'ADD';
+			private var licID:int;
+			
+
+			
+			protected function dataGrid_creationCompleteHandler(event:FlexEvent):void
+			{
+				getAllLicsResult.token = merce.getAllLics();
+			}
+			
+			protected function dgLicense_selectionChangeHandler(event:GridSelectionEvent):void
+			{
+				changeState('EDIT');
+				this.licID = this.dgLicense.selectedItem.id;
+				this.getLicByID(licID);
+				this.btnDeleteSelected.visible = true;
+				
+			}
+			
+			
+			protected function changeState(state:String):void{
+				if (state == 'EDIT'){
+					this.strMode = 'EDIT';
+					this.btnCreateNew.visible = false;
+					this.btnSaveNew.visible = false;
+					this.btnSaveChanges.visible = false;
+				}else{
+					this.strMode = 'ADD';
+					this.btnCreateNew.visible = false;
+					this.btnSaveNew.visible = false;
+					this.btnSaveChanges.visible = false;
+					this.txtDance.text = '';
+					this.txtLicensee.text = '';
+					this.txtLive.text = '';
+					this.txtPremiere.text = '';
+					this.txtRehearsals.text = '';
+					this.txtStagerTeacher.text = '';
+					this.btnDeleteSelected.visible = false;
+				}
+			}
+			
+			private function handleTextInput():void{
+				if (this.strMode == 'EDIT'){
+					this.btnSaveChanges.visible = true;
+				}else{
+					this.btnSaveNew.visible = true;
+				}
+				
+			}
+			
+			protected function getLicByID(id:Number):void
+			{
+				getLicByIDResult.token = merce.getLicByID(id);
+			}
+			
+			protected function getLicByIDResult_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace('here we are');
+				this.txtDance.text = event.result[0].Dance;
+				this.txtLicensee.text = event.result[0].Licensee;
+				this.txtLive.text = String(event.result[0].live);
+				this.txtPremiere.text = event.result[0].Premiere;
+				this.txtRehearsals.text = event.result[0].Rehearsals;
+				this.txtStagerTeacher.text = event.result[0].stagerTeacher;
+				this.txtType.text = String(event.result[0].licType);
+			}
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.strMode = 'ADD';
+				this.btnCreateNew.visible = false;
+				this.btnSaveChanges.visible = false;
+				this.btnSaveNew.visible = true;
+				
+			}
+			
+			
+			protected function btnSaveChanges_clickHandler(event:MouseEvent):void
+			{
+				 var license:License = new License();
+				license.Dance = this.txtDance.text;
+				license.id = this.dgLicense.selectedItem.id;
+				license.Licensee = this.txtLicensee.text;
+				license.licType = int(this.txtType.text);
+				license.live = int(this.txtLive.text);
+				license.Premiere = this.txtPremiere.text;
+				license.Rehearsals = this.txtRehearsals.text;
+				license.stagerTeacher = this.txtStagerTeacher.text;	
+				updateLicenseResult.token = merce.updateLicense(license);
+			}
+			
+			protected function updateLicenseResult_resultHandler(event:ResultEvent):void
+			{
+				getAllLicsResult.token = merce.getAllLics();
+				this.changeState('ADD');
+				
+			}
+			
+			
+			protected function createLicense(license:License):void
+			{
+				createLicenseResult.token = merce.createLicense(license);
+			}
+			
+			protected function createLicenseResult_resultHandler(event:ResultEvent):void
+			{
+				getAllLicsResult.token = merce.getAllLics();
+				this.changeState('ADD');
+			}
+			
+			protected function btnSaveNew_clickHandler(event:MouseEvent):void
+			{
+				var license:License = new License();
+				license.Dance = this.txtDance.text;
+				license.Licensee = this.txtLicensee.text;
+				license.licType = int(this.txtType.text);
+				license.live = int(this.txtLive.text);
+				license.Premiere = this.txtPremiere.text;
+				license.Rehearsals = this.txtRehearsals.text;
+				license.stagerTeacher = this.txtStagerTeacher.text;	
+				this.createLicense(license);
+				
+			}
+			
+			
+			protected function deleteLicense(id:Number):void
+			{
+				deleteLicenseResult.token = merce.deleteLicense(id);
+			}
+			
+			protected function btnDeleteSelected_clickHandler(event:MouseEvent):void
+			{
+				this.deleteLicense(this.dgLicense.selectedItem.id);
+				
+			}
+			
+			protected function deleteLicenseResult_resultHandler(event:ResultEvent):void
+			{
+				getAllLicsResult.token = merce.getAllLics();
+				this.changeState('ADD');
+				
+			}
+			
+			protected function btnMoveToHistory_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="State1"/>
+	</s:states>
+	<fx:Declarations>
+		<s:CallResponder id="getAllLicsResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getLicByIDResult" result="getLicByIDResult_resultHandler(event)"/>
+		<s:CallResponder id="updateLicenseResult" result="updateLicenseResult_resultHandler(event)"/>
+		<s:CallResponder id="createLicenseResult" result="createLicenseResult_resultHandler(event)"/>
+		<s:CallResponder id="deleteLicenseResult" result="deleteLicenseResult_resultHandler(event)"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:DataGrid id="dgLicense" x="10" y="40" width="910" height="159"
+				creationComplete="dataGrid_creationCompleteHandler(event)"
+				dataProvider="{getAllLicsResult.lastResult}"
+				selectionChange="dgLicense_selectionChangeHandler(event)">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="Dance" headerText="Dance" width="200"></s:GridColumn>
+				<s:GridColumn dataField="licType" headerText="Type" width="45"></s:GridColumn>
+				<s:GridColumn dataField="stagerTeacher" headerText="stagerTeacher"></s:GridColumn>
+				<s:GridColumn dataField="Premiere" headerText="Premiere"></s:GridColumn>
+				<s:GridColumn dataField="Licensee" headerText="Licensee"></s:GridColumn>
+				<s:GridColumn dataField="Rehearsals" headerText="Rehearsals"></s:GridColumn>
+				<s:GridColumn dataField="live" headerText="live" width="35"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		
+	</s:DataGrid>
+	<s:TextInput id="txtDance" x="72" y="233" width="333" change="handleTextInput()"/>
+	<s:Label x="10" y="236" text="Dance:"/>
+	<s:Label x="432" y="237" text="Licensee:"/>
+	<s:Label x="432" y="272" text="Rehearsals:"/>
+	<s:Label x="432" y="299" text="Live:"/>
+	<s:Label x="11" y="331" text="Stager:"/>
+	<s:Label x="11" y="369" text="Premiere:"/>
+	<s:Label x="11" y="284" text="Type:"/>
+	<s:TextInput id="txtType" x="72" y="282" width="31" change="handleTextInput()"/>
+	<s:Label x="118" y="288" fontStyle="italic" text="1 = Educational, 2 = Professional"/>
+	<s:Label x="550" y="300" fontStyle="italic" text="0 = Do Not Publish 1 = Publish"/>
+	<s:TextInput id="txtStagerTeacher" x="73" y="326" width="332" change="handleTextInput()"/>
+	<s:TextInput id="txtPremiere" x="72" y="362" width="150" change="handleTextInput()"/>
+	<s:TextInput id="txtLicensee" x="503" y="231" width="367" change="handleTextInput()"/>
+	<s:TextInput id="txtRehearsals" x="501" y="265" width="365" change="handleTextInput()"/>
+	<s:TextInput id="txtLive" x="505" y="295" width="28" change="handleTextInput()"/>
+	<s:Button id="btnSaveChanges" x="416" y="408" label="Save Changes"
+			  click="btnSaveChanges_clickHandler(event)"/>
+	<s:Button id="btnCreateNew" x="423" y="442" label="Delete Selected"/>
+	<s:Button id="btnSaveNew" x="429" y="408" label="Save New" click="btnSaveNew_clickHandler(event)"/>
+	<s:Button id="btnDeleteSelected" x="815" y="408" label="Delete Selected"
+			  click="btnDeleteSelected_clickHandler(event)"/>
+</s:Group>

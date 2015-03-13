@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="686" height="514">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			
+			
+			protected function dataGrid_creationCompleteHandler(event:FlexEvent):void
+			{
+				getMusicAndComposersResult.token = merce.getMusicAndComposers();
+			}
+			
+			
+			protected function cboComposers_creationCompleteHandler(event:FlexEvent):void
+			{
+				getComposersResult2.token = merce.getComposers();
+			}
+			
+			
+			protected function insertMusicComposer(title:String, composer:Number):void
+			{
+				insertMusicComposerResult.token = merce.insertMusicComposer(title, composer);
+				getMusicAndComposersResult.token = merce.getMusicAndComposers();
+			}
+			
+			protected function buttonAddMusicalWork_clickHandler(event:MouseEvent):void
+			{
+				if ((this.cboComposers.selectedItem) && (this.tiMusicalWork.text != "")){
+				this.insertMusicComposer(this.tiMusicalWork.text,this.cboComposers.selectedItem.data);
+			 } else{
+				 Alert.show('Please select a composer and a work title.');
+				 return;
+			 }
+			}
+			protected function buttonFinished_clickHandler(event:MouseEvent):void
+			{
+				this.parentApplication.currentState = '';
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getMusicResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getComposersResult"/>
+		<s:CallResponder id="getMusicAndComposersResult"/>
+		<s:CallResponder id="getComposersResult2"/>
+		<s:CallResponder id="insertMusicComposerResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextInput id="tiMusicalWork" x="104" y="85" width="504"/>
+	<s:Button id="buttonAddMusicalWork" x="104" y="134" width="251"
+			  label="Add Musical Work for Composer" click="buttonAddMusicalWork_clickHandler(event)"/>
+	<s:Label x="18" y="29" text="Composers"/>
+	<s:DataGrid id="dataGrid" x="80" y="193" width="530" height="256"
+				creationComplete="dataGrid_creationCompleteHandler(event)" sortableColumns="true" dataProvider="{getMusicAndComposersResult.lastResult}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Composer"></s:GridColumn>
+				<s:GridColumn dataField="Title" headerText="Title"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+
+	</s:DataGrid>
+	<s:ComboBox id="cboComposers" x="104" y="29" width="271"
+				creationComplete="cboComposers_creationCompleteHandler(event)" labelField="label">
+		<s:AsyncListView list="{getComposersResult2.lastResult}" />
+	</s:ComboBox>
+	<s:Label x="22" y="83" text="TItle"/>
+	<s:Button id="buttonFinished" x="80" y="474" label="Finished"
+			  click="buttonFinished_clickHandler(event)"/>
+</s:Group>

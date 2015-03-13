@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:merce="services.merce.*"
+		 width="400" height="550">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			private var danceTarget:Number;
+			
+			import valueObjects.DecorAssociation;
+			
+			[Bindable]
+			private var decorAssociation:DecorAssociation;
+			
+			protected function getAvailableDecor(danceID:Number):void
+			{
+				getAvailableDecorResult.token = merce.getAvailableDecor(danceID);
+			}
+			
+			public function initDecorCall(danceID:Number):void{
+				this.danceTarget = danceID;
+				this.getAvailableDecor(danceID);
+				this.getDecorForWork(danceID);
+				this.buttonCreateAssociation.visible = true;
+				this.buttonSaveAssociation.visible = false;
+				this.tiNotes.text = '';
+			}
+			
+			
+			protected function getDecorForWork(danceID:Number):void
+			{
+				getDecorForWorkResult.token = merce.getDecorForWork(danceID);
+			}
+		
+			
+			
+			protected function buttonCreateAssociation_clickHandler(event:MouseEvent):void
+			{
+				if(this.cboAvailable.selectedItem){
+					this.createAssocRecordForDecor2(danceTarget,this.cboAvailable.selectedItem.data, this.tiNotes.text);
+					this.getAvailableDecor(danceTarget);
+					this.getDecorForWork(danceTarget);
+				}else{
+					Alert.show('Please select an available Decor');
+					return;
+				}
+			}
+			
+			protected function buttonDeleteAssociation_clickHandler(event:MouseEvent):void
+			{
+				if(this.dataGrid.selectedItem){
+					this.deleteDecorAssociation(this.dataGrid.selectedItem.id);
+					this.getAvailableDecor(danceTarget);
+					this.getDecorForWork(danceTarget);
+					this.tiNotes.text = '';
+				}else{
+					Alert.show('Please select a Decor association to delete');
+				}
+			}
+			
+			
+			protected function deleteDecorAssociation(id:Number):void
+			{
+				deleteDecorAssociationResult.token = merce.deleteDecorAssociation(id);
+			}
+			
+			
+			protected function createAssocRecordForDecor2(danceID:Number, DecorID:Number, notes:String):void
+			{
+				createAssocRecordForDecorResult2.token = merce.createAssocRecordForDecor(danceID, DecorID, notes);
+			}
+			
+			
+			protected function getAssociationDecor(id:Number):void
+			{
+				getAssociationDecorResult.token = merce.getAssociationDecor(id);
+			}
+			
+			protected function buttonEditAssociation_clickHandler(event:MouseEvent):void
+			{
+				this.getAssociationDecor(this.dataGrid.selectedItem.id);
+				this.buttonCreateAssociation.visible = false;
+				
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getAvailableDecorResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getDecorForWorkResult"/>
+		<s:CallResponder id="createAssocRecordForDecorResult"/>
+		<s:CallResponder id="deleteDecorAssociationResult"/>
+		<s:CallResponder id="createAssocRecordForDecorResult2"/>
+		<s:CallResponder id="getAssociationDecorResult" result="decorAssociation = getAssociationDecorResult.lastResult[0] as DecorAssociation"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label x="137" y="29" text="Decor / Dance Data"/>
+	<s:ComboBox id="cboAvailable" x="105" y="101" width="204" labelField="label"
+				selectedItem="{{label:'- Select Decor ---'}}">
+		<s:AsyncListView list="{getAvailableDecorResult.lastResult}"/>
+	</s:ComboBox>
+	<s:DataGrid id="dataGrid" x="80" y="346" width="241" requestedRowCount="4">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Decor for Work"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getDecorForWorkResult.lastResult}"/>
+	</s:DataGrid>
+	<s:Label x="127" y="75" width="146" text="Available Decor"/>
+	<s:Button id="buttonCreateAssociation" x="122" y="252" label="Create Decor Association"
+			  click="buttonCreateAssociation_clickHandler(event)"/>
+	<s:Button id="buttonDeleteAssociation" x="116" y="516" label="Delete Selected Association"
+			  click="buttonDeleteAssociation_clickHandler(event)"/>
+	<s:TextArea id="tiNotes" x="105" y="157" height="69" text="{decorAssociation.notes}"/>
+	<s:Label x="105" y="232" text="Notes"/>
+	<s:Button id="buttonEditAssociation" x="116" y="483" width="169"
+			  label="Edit Selected Association" click="buttonEditAssociation_clickHandler(event)"/>
+	<s:Button id="buttonSaveAssociation" x="122" y="261" width="156" label="Save Association Edits"/>
+</s:Group>

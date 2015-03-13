@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="600" height="670" 
+		 >
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			
+			[bindable]
+			public var costumerID:int;
+			
+			private var mode:String;
+			
+			
+			
+			
+			public function getcostumerDetailsCall(costumerID:int):void
+			{
+				if (costumerID > 0){	
+					mode = "edit";
+					getcostumerDetailsResult.token = merce.getCostumerDetails(costumerID);
+					this.getWorksForCostumer(costumerID);
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatecostumer.visible = false;
+					this.buttonFinish.label = 'Cancel';
+				}else{
+					mode = "new";
+					this.ticostumer_FN.text = '';
+					this.ticostumer_LN.text = '';
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatecostumer.visible = false;
+					this.buttonFinish.label = 'Cancel';
+				}
+			}
+			
+			protected function ticostumer_FN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreatecostumer.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatecostumer.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			protected function buttonSaveChanges_clickHandler(event:MouseEvent):void
+			{
+				merce.updatecostumerDetails(costumerID,this.ticostumer_FN.text,this.ticostumer_LN.text);
+				
+				//this.parentApplication.currentState = '';
+				//this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getcostumersResult.token = merce.getCostumers();
+			}
+			
+			
+			protected function insertNewcostumer(costumer_FN:String, costumer_LN:String):void
+			{
+				insertNewcostumerResult.token = merce.insertNewcostumer(costumer_FN, costumer_LN);
+				//this.parentApplication.currentState = '';
+				this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				this.getCostumers();
+			}
+			
+			protected function buttonCreatecostumer_clickHandler(event:MouseEvent):void
+			{
+				this.insertNewcostumer(this.ticostumer_FN.text,this.ticostumer_LN.text);
+			}
+			
+			protected function buttonFinish_clickHandler(event:MouseEvent):void
+			{
+				this.parentApplication.refreshData();
+				this.parentApplication.currentState = '';
+				
+			}
+			
+			
+			protected function dg_Currentcostumers_creationCompleteHandler(event:FlexEvent):void
+			{
+				getcostumersResult.token = merce.getCostumers();
+			}
+			
+			
+			protected function getCostumerDetails(costumerID:Number):void
+			{
+				getCostumerDetailsResult.token = merce.getCostumerDetails(costumerID);
+			}
+			
+			protected function ticostumer_LN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreatecostumer.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatecostumer.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			protected function getCostumers():void
+			{
+				getcostumersResult.token = merce.getCostumers();
+			}
+			
+			
+			
+			
+			protected function getWorksForCostumer(CostumerID:Number):void
+			{
+				getWorksForCostumerResult.token = merce.getWorksForCostumer(CostumerID);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getcostumerDetailsResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="insertNewcostumerResult"/>
+		<s:CallResponder id="getcostumersResult"/>
+		<s:CallResponder id="getCostumerDetailsResult"/>
+		<s:CallResponder id="getCostumersResult"/>
+		<s:CallResponder id="getWorksForCostumerResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextInput id="ticostumer_FN" x="10" y="42" width="250" change="ticostumer_FN_changeHandler(event)"
+				 text="{getcostumerDetailsResult.lastResult.getItemAt(0).costumer_FN}"/>
+	<s:TextInput id="ticostumer_LN" x="10" y="116" width="250"
+				 change="ticostumer_LN_changeHandler(event)"
+				 text="{getcostumerDetailsResult.lastResult.getItemAt(0).costumer_LN}"/>
+	<s:Label x="10" y="22" text="costumer First Name:"/>
+	<s:Label x="10" y="96" text="costumer Last Name:"/>
+	<s:Button id="buttonSaveChanges" x="14" y="182" width="124" label="Save Changes"
+			  click="buttonSaveChanges_clickHandler(event)"/>
+	<s:Button id="buttonCreatecostumer" x="14" y="211" width="124" label="Create costumer"
+			  click="buttonCreatecostumer_clickHandler(event)"/>
+	<s:Button id="buttonFinish" x="14" y="240" width="124" label="Finish"
+			  click="buttonFinish_clickHandler(event)"/>
+	<s:DataGrid id="dg_Currentcostumers" x="14" y="285" width="386" height="312"
+				creationComplete="dg_Currentcostumers_creationCompleteHandler(event)"
+				>
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Current costumers"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1" costumer_FN="costumer_FN1" costumer_LN="costumer_LN1" data="data1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getcostumersResult.lastResult}"/>
+	</s:DataGrid>
+	<s:DataGrid id="dataGrid" x="410" y="42" width="180" height="219">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="workTitle" headerText="workTitle"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object workTitle="workTitle1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getWorksForCostumerResult.lastResult}"/>
+	</s:DataGrid>
+</s:Group>

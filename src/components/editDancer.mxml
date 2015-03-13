@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="600" height="670" 
+		  >
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			
+			[bindable]
+			public var dancerID:int;
+			
+			private var mode:String;
+			
+			
+			
+			
+			public function getDancerDetailsCall(dancerID:int):void
+			{	
+				getDancersResult.token = merce.getDancers();
+				if (dancerID > 0){	
+				mode = "edit";
+				getDancerDetailsResult.token = merce.getDancerDetails(dancerID);
+				getWorksForDancerResult.token = merce.getWorksForDancer(dancerID);
+				this.buttonSaveChanges.visible = false;
+				this.buttonCreateDancer.visible = false;
+				this.buttonFinish.label = 'Cancel';
+				}else{
+				mode = "new";
+				this.tiDancer_FN.text = '';
+				this.tiDancer_LN.text = '';
+				this.buttonSaveChanges.visible = false;
+				this.buttonCreateDancer.visible = false;
+				this.buttonFinish.label = 'Cancel';
+				}
+			}
+			
+			protected function tiDancer_FN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreateDancer.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreateDancer.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			protected function buttonSaveChanges_clickHandler(event:MouseEvent):void
+			{
+				merce.updateDancerDetails(dancerID,this.tiDancer_FN.text,this.tiDancer_LN.text);
+				
+				//this.parentApplication.currentState = '';
+				//this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getDancersResult.token = merce.getDancers();
+			}
+			
+			
+			protected function insertNewDancer(dancer_FN:String, dancer_LN:String):void
+			{
+				insertNewDancerResult.token = merce.insertNewDancer(dancer_FN, dancer_LN);
+				//this.parentApplication.currentState = '';
+				this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getDancersResult.token = merce.getDancers();
+			}
+			
+			protected function buttonCreateDancer_clickHandler(event:MouseEvent):void
+			{
+				this.insertNewDancer(this.tiDancer_FN.text,this.tiDancer_LN.text);
+			}
+			
+			protected function buttonFinish_clickHandler(event:MouseEvent):void
+			{
+				this.parentApplication.refreshData();
+				this.parentApplication.currentState = '';
+
+			}
+			
+			protected function tiDancer_LN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreateDancer.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreateDancer.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			
+			
+			
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getDancerDetailsResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="insertNewDancerResult"/>
+		<s:CallResponder id="getDancersResult"/>
+		<s:CallResponder id="getWorksForDancerResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextInput id="tiDancer_FN" x="10" y="42" width="250" change="tiDancer_FN_changeHandler(event)"
+				 text="{getDancerDetailsResult.lastResult.getItemAt(0).dancer_FN}"/>
+	<s:TextInput id="tiDancer_LN" x="10" y="116" width="250"
+				 change="tiDancer_LN_changeHandler(event)"
+				 text="{getDancerDetailsResult.lastResult.getItemAt(0).dancer_LN}"/>
+	<s:Label x="10" y="22" text="Dancer First Name:"/>
+	<s:Label x="10" y="96" text="Dancer Last Name:"/>
+	<s:Button id="buttonSaveChanges" x="14" y="182" width="124" label="Save Changes"
+			  click="buttonSaveChanges_clickHandler(event)"/>
+	<s:Button id="buttonCreateDancer" x="14" y="211" width="124" label="Create Dancer"
+			  click="buttonCreateDancer_clickHandler(event)"/>
+	<s:Button id="buttonFinish" x="14" y="240" width="124" label="Finish"
+			  click="buttonFinish_clickHandler(event)"/>
+	<s:DataGrid id="dg_CurrentDancers" x="14" y="285" width="386" height="312"
+				>
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Current Dancers"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1" dancer_FN="dancer_FN1" dancer_LN="dancer_LN1" data="data1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getDancersResult.lastResult}"/>
+	</s:DataGrid>
+	<s:DataGrid id="dataGrid" x="410" y="42" width="180" height="241">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="workTitle" headerText="Associated Dances"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:AsyncListView list="{getWorksForDancerResult.lastResult}"/>
+	</s:DataGrid>
+</s:Group>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="600" height="670" 
+		 >
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			
+			[bindable]
+			public var lightingDesignerID:int;
+			
+			private var mode:String;
+			
+			
+			
+			public function getlightingDesignerDetailsCall(lightingDesignerID:int):void
+			{	
+				getlightingDesignerResult.token = merce.getLighting();
+				if (lightingDesignerID > 0){	
+					mode = "edit";
+					getlightingDesignerDetailsResult.token = merce.getLightingDesignerDetails(lightingDesignerID);
+					getWorksForLightingResult.token = merce.getWorksForLighting(lightingDesignerID);
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatelightingDesigner.visible = false;
+					this.buttonFinish.label = 'Cancel';
+				}else{
+					mode = "new";
+					this.tilightingDesigner_FN.text = '';
+					this.tilightingDesigner_LN.text = '';
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatelightingDesigner.visible = true;
+					this.buttonFinish.label = 'Cancel';
+				}
+			}
+			
+			protected function tilightingDesigner_FN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreatelightingDesigner.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatelightingDesigner.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			protected function buttonSaveChanges_clickHandler(event:MouseEvent):void
+			{
+				merce.updatelightingDesignerDetails(lightingDesignerID,this.tilightingDesigner_FN.text,this.tilightingDesigner_LN.text);
+				
+				//this.parentApplication.currentState = '';
+				//this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getlightingDesignerResult.token = merce.getLighting();
+			}
+			
+			
+			protected function insertNewlightingDesigner(lightingDesigner_FN:String, lightingDesigner_LN:String):void
+			{
+				insertNewlightingDesignerResult.token = merce.insertNewlightingDesigner(lightingDesigner_FN, lightingDesigner_LN);
+				//this.parentApplication.currentState = '';
+				this.parentApplication.refreshData();
+				this.buttonFinish.visible = true;
+				this.buttonFinish.label = 'Return';
+				getlightingDesignerResult.token = merce.getLighting();
+			}
+			
+			protected function buttonCreatelightingDesigner_clickHandler(event:MouseEvent):void
+			{
+				this.insertNewlightingDesigner(this.tilightingDesigner_FN.text,this.tilightingDesigner_LN.text);
+			}
+			
+			protected function buttonFinish_clickHandler(event:MouseEvent):void
+			{
+				this.parentApplication.refreshData();
+				this.parentApplication.currentState = '';
+				
+			}
+			
+			
+			
+			
+			
+			protected function getlightingDesigner():void
+			{
+				getlightingDesignerResult.token = merce.getLighting();
+			}
+			
+			protected function tilightingDesigner_LN_changeHandler(event:TextOperationEvent):void
+			{
+				if (mode == "edit"){
+					this.buttonSaveChanges.visible = true;
+					this.buttonCreatelightingDesigner.visible = false;
+					this.buttonFinish.visible = true;
+				}else{
+					this.buttonSaveChanges.visible = false;
+					this.buttonCreatelightingDesigner.visible = true;
+					this.buttonFinish.visible = true;
+				}
+				
+			}
+			
+			protected function getLightingDesignerDetails(lightingDesignerID:Number):void
+			{
+				getlightingDesignerDetailsResult.token = merce.getLightingDesignerDetails(lightingDesignerID);
+			}
+			
+			
+			
+		
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="insertNewlightingDesignerResult"/>
+		<s:CallResponder id="getlightingDesignerDetailsResult"/>
+		<s:CallResponder id="getlightingDesignerResult"/>
+		<s:CallResponder id="getWorksForLightingResult"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextInput id="tilightingDesigner_FN" x="10" y="42" width="250" change="tilightingDesigner_FN_changeHandler(event)"
+				 text="{getlightingDesignerDetailsResult.lastResult.getItemAt(0).lightingDesigner_FN}"/>
+	<s:TextInput id="tilightingDesigner_LN" x="10" y="116" width="250"
+				 change="tilightingDesigner_LN_changeHandler(event)"
+				 text="{getlightingDesignerDetailsResult.lastResult.getItemAt(0).lightingDesigner_LN}"/>
+	<s:Label x="10" y="22" text="lightingDesigner First Name:"/>
+	<s:Label x="10" y="96" text="lightingDesigner Last Name:"/>
+	<s:Button id="buttonSaveChanges" x="14" y="182" width="124" label="Save Changes"
+			  click="buttonSaveChanges_clickHandler(event)"/>
+	<s:Button id="buttonCreatelightingDesigner" x="14" y="211" width="124" label="Create lightingDesigner"
+			  click="buttonCreatelightingDesigner_clickHandler(event)"/>
+	<s:Button id="buttonFinish" x="14" y="240" width="124" label="Finish"
+			  click="buttonFinish_clickHandler(event)"/>
+	<s:DataGrid id="dg_CurrentlightingDesigners" x="14" y="285" width="386" height="312"
+				
+				>
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Current Lighting Designers"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1" lightingDesigner_FN="lightingDesigner_FN1" lightingDesigner_LN="lightingDesigner_LN1" data="data1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getlightingDesignerResult.lastResult}"/>
+	</s:DataGrid>
+	<s:DataGrid id="dataGrid" x="383" y="24" width="207" height="237">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="workTitle" headerText="Associated Dances"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object id="id1" workTitle="workTitle1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getWorksForLightingResult.lastResult}"/>
+	</s:DataGrid>
+</s:Group>
+
+

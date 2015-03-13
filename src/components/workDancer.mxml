@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:merce="services.merce.*"
+		 width="400" height="550">
+	<fx:Declarations>
+		<s:CallResponder id="getAvailableDancersResult"/>
+		<merce:Merce id="merce"
+					 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					 showBusyCursor="true"/>
+		<s:CallResponder id="getDancersForWorkResult"/>
+		<s:CallResponder id="createAssocRecordForDancerResult"/>
+		<s:CallResponder id="deleteDancerAssociationResult"/>
+		<s:CallResponder id="getAssocRecordForDancerResult"/>
+		<s:CallResponder id="getAssocRecordForDancerResult2" result="danceAssociation = getAssocRecordForDancerResult2.lastResult[0] as DanceAssociation"/>
+		<s:CallResponder id="editAssociationForDancerResult"/>
+		<s:CallResponder id="editAssociationForDancerResult2"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import valueObjects.DanceAssociation;
+			
+			
+			public var danceTargetID:int;
+			[Bindable]
+			private var initials:String;
+			
+			[Bindable]
+			private var danceAssociation:DanceAssociation;
+			
+			public function initCall(danceID:int):void{
+				
+				this.danceTargetID = danceID;
+				getAvailableDancersResult.token = merce.getAvailableDancers(danceID);
+				getDancersForWorkResult.token = merce.getDancersForWork(danceID);
+				this.buttonAddDancerToWork.visible = true;
+				this.buttonEditAssociation.visible = false;
+			}
+			
+			
+			
+			
+			
+	
+			
+			protected function buttonAddDancerToWork_clickHandler(event:MouseEvent):void
+			{	
+				if (this.dgAvailableDancers.selectedItem.data > 0){
+				var origFlag:int = 0;
+				if(this.checkOriginalDancer.selected){
+					origFlag = 1;
+				}
+				this.createAssocRecordForDancer(danceTargetID,this.dgAvailableDancers.selectedItem.data,origFlag,this.tiInitials.text);
+				this.initCall(this.danceTargetID);		
+			 } else {
+				 Alert.show('Please Select an Available Dancer');
+				 return;
+			 }
+			}
+			
+			public function createAssocRecordForDancer(danceID:Number, dancerID:Number, orginal:Number, initials:String):void
+			{
+				createAssocRecordForDancerResult.token = merce.createAssocRecordForDancer(danceID, dancerID, orginal, initials);
+			}
+			
+		
+			
+			
+			
+			protected function buttonDeleteAssoc_clickHandler(event:MouseEvent):void
+			{
+				this.merce.deleteDancerAssociation(this.dgAssociations.selectedItem.id);
+				initCall(danceTargetID);
+			}
+			
+			
+			protected function deleteDancerAssociation(id:Number):void
+			{
+				deleteDancerAssociationResult.token = merce.deleteDancerAssociation(id);
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.getAssocRecordForDancer2(this.dgAssociations.selectedItem.id);
+			
+			}
+			
+			
+		
+			
+			
+			protected function getAssocRecordForDancer2(id:Number):void
+			{
+				getAssocRecordForDancerResult2.token = merce.getAssocRecordForDancer(id);
+				this.buttonAddDancerToWork.visible = false;
+				this.buttonEditAssociation.visible = true;
+			}
+			
+			protected function buttonEditAssociation_clickHandler(event:MouseEvent):void
+			{
+				var origFlag:int = 0;
+				if(this.checkOriginalDancer.selected){
+					origFlag = 1;
+				}
+				//danceAssociation.originalDancer = origFlag;
+				danceAssociation.castInititials = this.tiInitials.text;
+				this.editAssociationForDancer(danceAssociation.dancer,danceAssociation.work,origFlag,danceAssociation.castInititials);
+				this.buttonEditAssociation.visible = false;
+			}
+			
+			
+		
+			
+			
+			protected function editAssociationForDancer(dancer:Number, dance:Number, originalDancer:Number, castInititials:String):void
+			{
+				editAssociationForDancerResult2.token = merce.editAssociationForDancer(dancer, dance, originalDancer, castInititials);
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label x="137" y="33" text="Dancers / Dance Data"/>
+	<s:ComboBox id="dgAvailableDancers" x="56" y="117"
+				labelField="label" selectedItem="{{label:'- Select Dancer ---'}}">
+		<s:AsyncListView list="{getAvailableDancersResult.lastResult}"/>
+	</s:ComboBox>
+	<s:Label x="56" y="97" text="Available Dancers"/>
+	<s:DataGrid id="dgAssociations" x="53" y="318" width="298" height="140">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Dancers for Work"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object label="label1"></fx:Object>
+		</s:typicalItem>
+		<s:AsyncListView list="{getDancersForWorkResult.lastResult}"/>
+	</s:DataGrid>
+	<s:Button id="buttonAddDancerToWork" x="58" y="277" label="Add Dancer to Work"
+			  click="buttonAddDancerToWork_clickHandler(event)"/>
+	<s:CheckBox id="checkOriginalDancer" x="56" y="168" width="191" label="Original Dancer for Work"
+				selected="{danceAssociation.originalDancer}"/>
+	<s:TextInput id="tiInitials" x="58" y="216" width="36" text="{danceAssociation.castInititials}"/>
+	<s:Label x="113" y="217" text="Initials"/>
+	<s:Button id="buttonDeleteAssoc" x="87" y="512" width="218" label="Delete Dancer-Dance Record"
+			  click="buttonDeleteAssoc_clickHandler(event)"/>
+	<s:Button x="87" y="466" width="218" label="Edit Selected Association Record"
+			  click="button1_clickHandler(event)"/>
+	<s:Button id="buttonEditAssociation" x="72" y="277" width="130" label="Save Edits"
+			  click="buttonEditAssociation_clickHandler(event)"/>
+	
+	
+</s:Group>
